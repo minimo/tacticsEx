@@ -6,7 +6,7 @@
  *
  */
 
-tm.define("shotgun.MainScene", {
+tm.define("tactics.MainScene", {
     superClass: tm.app.Scene,
 
     //マルチタッチ補助クラス
@@ -211,11 +211,11 @@ tm.define("shotgun.MainScene", {
         }
 
         //ポーズボタン
-        this.pause = shotgun.Button(200, 60, "PAUSE", {flat: appMain.buttonFlat, fontSize:40})
+        this.pause = tactics.Button(200, 60, "PAUSE", {flat: appMain.buttonFlat, fontSize:40})
             .addChildTo(this)
             .setPosition(SC_W*0.84, 90)
             .addEventListener("pushed", function() {
-                appMain.pushScene(shotgun.PauseScene(this));
+                appMain.pushScene(tactics.PauseScene(this));
             }.bind(this));
 
         //モード名称表示とBGM
@@ -240,7 +240,7 @@ tm.define("shotgun.MainScene", {
             .setPosition(SC_W-5, 32);
 
         //カードデッキ
-        this.deck = shotgun.CardDeck().addChildTo(this.mainLayer);
+        this.deck = tactics.CardDeck().addChildTo(this.mainLayer);
 
         //スタートアップ
         var lb = this.readyLabel = tm.display.Sprite("ready")
@@ -380,7 +380,7 @@ tm.define("shotgun.MainScene", {
         //ゲーム終了処理
         if (this.exitGame) {
             appMain.stopBGM();
-            appMain.replaceScene(shotgun.TitleScene());
+            appMain.replaceScene(tactics.TitleScene());
         }
 
         //スクリーンショット保存
@@ -479,7 +479,7 @@ tm.define("shotgun.MainScene", {
             .wait(2000)
             .call(function() {
                 this.remove();
-                appMain.replaceScene(shotgun.GameoverScene(that));
+                appMain.replaceScene(tactics.GameoverScene(that));
             }.bind(lb));
 
         //設定保存
@@ -492,7 +492,7 @@ tm.define("shotgun.MainScene", {
         if (ac) {
             //達成実績があったらテロップを投入
             var that = this;
-            var telop = shotgun.Telop().addChildTo(this).setPosition(SC_W*0.5, SC_H*0.85);
+            var telop = tactics.Telop().addChildTo(this).setPosition(SC_W*0.5, SC_H*0.85);
             for (var i = 0; i < ac.length; i++) {
                 var text1 = $trans("実績「");
                 var text2 = $trans("」が解除されました");

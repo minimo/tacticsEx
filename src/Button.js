@@ -7,7 +7,7 @@
  */
 
 //通常のボタン
-tm.define("shotgun.Button", {
+tm.define("tactics.Button", {
     superClass: tm.display.CanvasElement,
 
     //描画スタイル設定
@@ -193,8 +193,8 @@ tm.define("shotgun.Button", {
 });
 
 //角丸ボタン
-tm.define("shotgun.RoundButton", {
-    superClass: shotgun.Button,
+tm.define("tactics.RoundButton", {
+    superClass: tactics.Button,
 
     init: function(width, height, text, style) {
         this.superInit(width, height, text, style);
@@ -248,7 +248,7 @@ tm.define("shotgun.RoundButton", {
 });
 
 //トグルボタン
-tm.define("shotgun.ToggleButton", {
+tm.define("tactics.ToggleButton", {
     superClass: tm.display.CanvasElement,
 
     //描画スタイル設定
@@ -478,7 +478,7 @@ tm.define("shotgun.ToggleButton", {
         }
     },
 });
-shotgun.ToggleButton.prototype.accessor("toggleON", {
+tactics.ToggleButton.prototype.accessor("toggleON", {
     "set": function(b) {
         this._toggleON = b;
 
@@ -508,7 +508,7 @@ shotgun.ToggleButton.prototype.accessor("toggleON", {
 });
 
 //スライドボタン
-tm.define("shotgun.SlideButton", {
+tm.define("tactics.SlideButton", {
     superClass: tm.display.CanvasElement,
 
     //描画スタイル設定
@@ -598,7 +598,7 @@ tm.define("shotgun.SlideButton", {
     },
 });
 
-shotgun.SlideButton.prototype.accessor("slideON", {
+tactics.SlideButton.prototype.accessor("slideON", {
     "set": function(b) {
         this._slideON = b;
 

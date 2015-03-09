@@ -6,11 +6,11 @@
  */
 
 //namespace tiger
-shotgun = {
+tactics = {
     core: null,
 };
 
-tm.define("shotgun.CanvasApp", {
+tm.define("tactics.CanvasApp", {
     superClass: tm.app.CanvasApp,
 
     version: "1.0.3",
@@ -56,13 +56,13 @@ tm.define("shotgun.CanvasApp", {
         this.background = "rgba(0, 0, 0, 0)";
         this.keyboard = tm.input.Keyboard(window);
 
-        shotgun.core = this;
+        tactics.core = this;
 
         //役名一覧作成
         this.createHandList();
 
         //サウンドセット
-        this.sounds = shotgun.SoundSet(MEDIA_DEFAULT);
+        this.sounds = tactics.SoundSet(MEDIA_DEFAULT);
 
         //スコア
         this.highScore[GAMEMODE_NORMAL] = 0;
@@ -76,13 +76,13 @@ tm.define("shotgun.CanvasApp", {
         this.lastScore[GAMEMODE_HARD+10] = 0;
 
         //実績情報
-        this.achievement = shotgun.Achievement();
+        this.achievement = tactics.Achievement();
 
         //設定情報の読み込み
         this.loadConfig();
 
         //アセット読み込み
-        var loadingScene = shotgun.LoadingScene();
+        var loadingScene = tactics.LoadingScene();
         this.replaceScene(loadingScene);
     },
 
@@ -231,13 +231,13 @@ tm.define("shotgun.CanvasApp", {
     },
 });
 
-shotgun.CanvasApp.prototype.accessor("volumeBGM", {
+tactics.CanvasApp.prototype.accessor("volumeBGM", {
     "get": function() { return this.sounds.volumeBGM; },
     "set": function(vol) {
         this.setVolumeBGM(vol)
     }
 });
-shotgun.CanvasApp.prototype.accessor("volumeSE", {
+tactics.CanvasApp.prototype.accessor("volumeSE", {
     "get": function() { return this.sounds.volumeSE; },
     "set": function(vol) {
         this.setVolumeSE(vol)

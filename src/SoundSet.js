@@ -7,7 +7,7 @@
  */
 
 //サウンド管理
-tm.define("shotgun.SoundSet", {
+tm.define("tactics.SoundSet", {
     defaultType: MEDIA_ASSET,
     elements: null,
 
@@ -29,13 +29,13 @@ tm.define("shotgun.SoundSet", {
         var e = null;
         switch(this.defaultType) {
             case MEDIA_ASSET:
-                e = shotgun.SoundElement_WebAudio(name);
+                e = tactics.SoundElement_WebAudio(name);
                 break;
             case MEDIA_CORDOVA:
-                e = shotgun.SoundElement_CordovaMedia(name, url);
+                e = tactics.SoundElement_CordovaMedia(name, url);
                 break;
             case MEDIA_LLA:
-                e = shotgun.SoundElement_LLA(name, url);
+                e = tactics.SoundElement_LLA(name, url);
                 break;
         }
         this.elements.push(e);
@@ -126,7 +126,7 @@ tm.define("shotgun.SoundSet", {
 });
 
 //SoundElement Basic
-tm.define("shotgun.SoundElement", {
+tm.define("tactics.SoundElement", {
 
     type: 0,
     name: null,
@@ -177,8 +177,8 @@ tm.define("shotgun.SoundElement", {
 });
 
 //SoundElement(WebAudio/tmlibAsset)
-tm.define("shotgun.SoundElement_WebAudio", {
-    superClass: shotgun.SoundElement,
+tm.define("tactics.SoundElement_WebAudio", {
+    superClass: tactics.SoundElement,
 
     init: function(name) {
         this.superInit(MEDIA_ASSET, name);
@@ -202,8 +202,8 @@ tm.define("shotgun.SoundElement_WebAudio", {
 });
 
 //SoundElement(CordovaMediaPlugin)
-tm.define("shotgun.SoundElement_CordovaMedia", {
-    superClass: shotgun.SoundElement,
+tm.define("tactics.SoundElement_CordovaMedia", {
+    superClass: tactics.SoundElement,
 
     init: function(name, url) {
         this.superInit(MEDIA_CORDOVA, name, cordovaPath()+url);
@@ -242,8 +242,8 @@ tm.define("shotgun.SoundElement_CordovaMedia", {
 });
 
 //SoundElement(LowLatencyAudioPlugin)
-tm.define("shotgun.SoundElement_LLA", {
-    superClass: shotgun.SoundElement,
+tm.define("tactics.SoundElement_LLA", {
+    superClass: tactics.SoundElement,
     lla: null,
     init: function(name, url) {
         this.superInit(MEDIA_LLA, name, url);

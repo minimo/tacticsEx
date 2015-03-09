@@ -71,8 +71,8 @@ var onPause = function() {
 
     //ゲーム中の場合ポーズシーンに移行
     var scene = appMain.currentScene;
-    if (scene instanceof shotgun.MainScene && !scene.gameend) {
-        appMain.pushScene(shotgun.PauseScene(scene));
+    if (scene instanceof tactics.MainScene && !scene.gameend) {
+        appMain.pushScene(tactics.PauseScene(scene));
     }
 }
 
@@ -132,7 +132,7 @@ var showLeadersBoard = function(id) {
 
     if (DEVICE_IOS) {
         if (!ENABLE_PHONEGAP) {
-            appMain.pushScene(shotgun.AlertDialog({
+            appMain.pushScene(tactics.AlertDialog({
                 height: SC_H*0.2,
                 text1: "GameCenterに接続できませんでした",
                 fontSize: 32,
@@ -146,7 +146,7 @@ var showLeadersBoard = function(id) {
 
             //再接続失敗
             if (!ENABLE_GAMECENTER) {
-                appMain.pushScene(shotgun.AlertDialog({
+                appMain.pushScene(tactics.AlertDialog({
                     height: SC_H*0.2,
                     text1: "GameCenterに接続できませんでした",
                     fontSize: 32,
@@ -231,10 +231,10 @@ var reportAchievements = function(name, percent) {
             });
     }
     if (DEVICE_ANDROID) {
-        if (shotgun.achievementList[name].id === undefined) return false;
-        if (shotgun.achievementList[name].id == "") return false;
+        if (tactics.achievementList[name].id === undefined) return false;
+        if (tactics.achievementList[name].id == "") return false;
         googleplaygame.unlockAchievement({
-                achievementId: shotgun.achievementList[name].id
+                achievementId: tactics.achievementList[name].id
             },
             function(){
                 if (DEBUG_GAMECENTER) AdvanceAlert('実績登録に成功しました');

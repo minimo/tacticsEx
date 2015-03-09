@@ -6,7 +6,7 @@
  *
  */
 
-tm.define("shotgun.LoadingScene", {
+tm.define("tactics.LoadingScene", {
     superClass: "tm.app.Scene",
 
     init: function(param) {
@@ -19,7 +19,7 @@ tm.define("shotgun.LoadingScene", {
             bgColor: 'rgba(50, 110, 50, 1)',
             nextScene: function() {
                 this._onLoadAssets();
-                return shotgun.TitleScene();
+                return tactics.TitleScene();
             }.bind(this),
         };
 

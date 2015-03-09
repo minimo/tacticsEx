@@ -78,7 +78,7 @@ appMain = {};
 
 //アプリケーションメイン
 tm.main(function() {
-    appMain = shotgun.CanvasApp("#world");
+    appMain = tactics.CanvasApp("#world");
     appMain.createHandList();
     appMain.run();
 });

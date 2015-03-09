@@ -16,7 +16,7 @@ var assets = {
     "card":         "assets/trump.png",
     "tmliblogo":    "assets/tmlib_logo.png",
     "titlelogo":    "assets/titlelogo.png",
-    "shotgun":      "assets/shotgun.png",
+    "tactics":      "assets/tactics.png",
     "ready":        "assets/ready.png",
     "gameover":     "assets/gameover.png",
     "count":        "assets/count.png",

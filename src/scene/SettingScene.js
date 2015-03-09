@@ -6,7 +6,7 @@
  *
  */
 
-tm.define("shotgun.SettingScene", {
+tm.define("tactics.SettingScene", {
     superClass: tm.app.Scene,
 
     bgm: null,
@@ -22,7 +22,7 @@ tm.define("shotgun.SettingScene", {
         var that = this;
 
         //スコア消去確認ダイアログ
-        this.dialog = shotgun.ConfirmDialog("CLEAR SCORE DATA?", ["YES", "NO"]);
+        this.dialog = tactics.ConfirmDialog("CLEAR SCORE DATA?", ["YES", "NO"]);
 
         //バックグラウンド
         this.bg = tm.display.RectangleShape({width: SC_W, height: SC_H, fillStyle: appMain.bgColor, strokeStyle: appMain.bgColor})
@@ -75,7 +75,7 @@ tm.define("shotgun.SettingScene", {
             .setParam(this.labelParam)
             .setPosition(SC_W*0.5, SC_H*0.50);
         var width = 250, height = 90;
-        this.japanese = shotgun.ToggleButton(width, height, "日本語", "日本語", {flat: appMain.buttonFlat, fontSize:40})
+        this.japanese = tactics.ToggleButton(width, height, "日本語", "日本語", {flat: appMain.buttonFlat, fontSize:40})
             .addChildTo(this)
             .setPosition(SC_W*0.25, SC_H*0.57)
             .addEventListener("pushed", function() {
@@ -85,7 +85,7 @@ tm.define("shotgun.SettingScene", {
                 }
                 this.toggleON = true;
             });
-        this.english = shotgun.ToggleButton(width, height, "English", "English", {flat: appMain.buttonFlat, fontSize:40})
+        this.english = tactics.ToggleButton(width, height, "English", "English", {flat: appMain.buttonFlat, fontSize:40})
             .addChildTo(this)
             .setPosition(SC_W*0.75, SC_H*0.57)
             .addEventListener("pushed", function() {
@@ -115,7 +115,7 @@ tm.define("shotgun.SettingScene", {
             .setParam(this.labelParam)
             .setPosition(SC_W*0.3, SC_H*0.65);
         var width = 250, height = 80;
-        this.retJoker = shotgun.ToggleButton(width, height, "ON", "OFF", {flat: appMain.buttonFlat})
+        this.retJoker = tactics.ToggleButton(width, height, "ON", "OFF", {flat: appMain.buttonFlat})
             .addChildTo(this)
             .setPosition(SC_W*0.78, SC_H*0.65)
             .addEventListener("pushed", function() {
@@ -128,7 +128,7 @@ tm.define("shotgun.SettingScene", {
             .addChildTo(this)
             .setParam(this.labelParam)
             .setPosition(SC_W*0.3, SC_H*0.75);
-        shotgun.Button(width, height, "CLEAR", {flat: appMain.buttonFlat, fontSize:50})
+        tactics.Button(width, height, "CLEAR", {flat: appMain.buttonFlat, fontSize:50})
             .addChildTo(this)
             .setPosition(SC_W*0.78, SC_H*0.75)
             .addEventListener("pushed", function() {
@@ -137,7 +137,7 @@ tm.define("shotgun.SettingScene", {
 */
         //戻るボタン
         var width = SC_W, height = 100;
-        shotgun.Button(width, height, "RETURN TO TITLE", {flat: appMain.buttonFlat, fontSize:50})
+        tactics.Button(width, height, "RETURN TO TITLE", {flat: appMain.buttonFlat, fontSize:50})
             .addChildTo(this)
             .setPosition(SC_W*0.5, SC_H*0.85)
             .addEventListener("pushed", function() {

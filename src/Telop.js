@@ -6,7 +6,7 @@
  */
 
 //メッセージテロップ表示
-tm.define("shotgun.Telop", {
+tm.define("tactics.Telop", {
     superClass: tm.app.Object2D,
 
     //テロップメッセージキュー

@@ -6,7 +6,7 @@
  *
  */
 
-tm.define("shotgun.GameoverScene", {
+tm.define("tactics.GameoverScene", {
     superClass: tm.app.Scene,
 
     parentScene: null,
@@ -86,7 +86,7 @@ tm.define("shotgun.GameoverScene", {
         var param = {flat: appMain.buttonFlat, fontSize:50};
 
         //全画面広告ボタン
-        this.Ad = shotgun.Button(width*0.3, height, "Ad", param)
+        this.Ad = tactics.Button(width*0.3, height, "Ad", param)
             .addChildTo(this)
             .setPosition(SC_W*0.15, SC_H*0.7)
             .addEventListener("pushed", function() {
@@ -100,7 +100,7 @@ tm.define("shotgun.GameoverScene", {
             });
 
         //GAMECENTER
-        shotgun.Button(width*0.4, height, "RANKING", param)
+        tactics.Button(width*0.4, height, "RANKING", param)
             .addChildTo(this)
             .setPosition(SC_W*0.5, SC_H*0.70)
             .addEventListener("pushed", function() {
@@ -112,7 +112,7 @@ tm.define("shotgun.GameoverScene", {
             });
 
         //SNS
-        shotgun.Button(width*0.3, height, "SNS", param)
+        tactics.Button(width*0.3, height, "SNS", param)
             .addChildTo(this)
             .setPosition(SC_W*0.85, SC_H*0.70)
             .addEventListener("pushed", function() {
@@ -120,28 +120,28 @@ tm.define("shotgun.GameoverScene", {
             });
 
         //リトライボタン
-        this.retry = shotgun.Button(width, height, "TRY AGAIN", param)
+        this.retry = tactics.Button(width, height, "TRY AGAIN", param)
             .addChildTo(this)
             .setPosition(SC_W*0.5, SC_H*0.78)
             .addEventListener("pushed", function() {
                 var mode = that.parentScene.mode;
                 that.parentScene = null;
-                that.mask.tweener.clear().fadeIn(300).call(function(){appMain.replaceScene(shotgun.MainScene(mode));});
+                that.mask.tweener.clear().fadeIn(300).call(function(){appMain.replaceScene(tactics.MainScene(mode));});
             });
 
         //戻るボタン
-        this.back = shotgun.Button(width, height, "RETURN TO TITLE", param)
+        this.back = tactics.Button(width, height, "RETURN TO TITLE", param)
             .addChildTo(this)
             .setPosition(SC_W*0.5, SC_H*0.86)
             .addEventListener("pushed", function() {
                 that.parentScene = null;
-                that.mask.tweener.clear().fadeIn(300).call(function(){appMain.replaceScene(shotgun.TitleScene());});
+                that.mask.tweener.clear().fadeIn(300).call(function(){appMain.replaceScene(tactics.TitleScene());});
             });
 
         //ライフサービステロップ
         if (this.mode == GAMEMODE_NORMAL && !this.bonus) {
             if (appMain.telopCount < 0 || appMain.firstNormalGameOver) {
-                this.telop = shotgun.Telop()
+                this.telop = tactics.Telop()
                     .addChildTo(this)
                     .setPosition(SC_W*0.5, SC_H*0.5)
                     .add({text:$trans("Adボタンで広告を見るとライフ１個ボーナス！"), size:28, dispWait:5000, silent:true});

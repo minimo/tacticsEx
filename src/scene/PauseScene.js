@@ -6,7 +6,7 @@
  *
  */
 
-tm.define("shotgun.PauseScene", {
+tm.define("tactics.PauseScene", {
     superClass: tm.app.Scene,
 
     dialog: null,
@@ -21,7 +21,7 @@ tm.define("shotgun.PauseScene", {
         this.background = "rgba(0, 0, 0, 0.0)";
 
         //ダイアログ
-        this.dialog = shotgun.ConfirmDialog("EXIT GAME?", ["YES", "NO"]);
+        this.dialog = tactics.ConfirmDialog("EXIT GAME?", ["YES", "NO"]);
 
         //バックグラウンド
         this.bg = tm.display.RectangleShape({width: SC_W, height: SC_H, fillStyle: appMain.bgColor, strokeStyle: appMain.bgColor})
@@ -60,7 +60,7 @@ tm.define("shotgun.PauseScene", {
         var param = {fillStyle:'rgba(0,80,0,1)', lineWidth:4};
 
         //戻るボタン
-        shotgun.Button(width, height, "RESUME", {flat: appMain.buttonFlat})
+        tactics.Button(width, height, "RESUME", {flat: appMain.buttonFlat})
             .addChildTo(this)
             .setPosition(SC_W*0.5, SC_H*0.76)
             .addEventListener("pushed", function() {
@@ -68,7 +68,7 @@ tm.define("shotgun.PauseScene", {
             });
 
         //終了ボタン
-        shotgun.Button(width, height, "RETURN TO TITLE", {flat: appMain.buttonFlat})
+        tactics.Button(width, height, "RETURN TO TITLE", {flat: appMain.buttonFlat})
             .addChildTo(this)
             .setPosition(SC_W*0.5, SC_H*0.85)
             .addEventListener("pushed", function() {
@@ -84,7 +84,7 @@ tm.define("shotgun.PauseScene", {
 
     onresume: function() {
         if (this.dialog.answer == true) {
-            appMain.replaceScene(shotgun.TitleScene());
+            appMain.replaceScene(tactics.TitleScene());
         }
     },
 
@@ -101,7 +101,7 @@ tm.define("shotgun.PauseScene", {
     },
 });
 
-tm.define("shotgun.ConfirmDialog", {
+tm.define("tactics.ConfirmDialog", {
     superClass: tm.app.Scene,
 
     answer: null,
@@ -130,7 +130,7 @@ tm.define("shotgun.ConfirmDialog", {
         lb.setPosition(SC_W*0.5, SC_H*0.42);
 
         //ＹＥＳ
-        shotgun.Button(width, height, button[0], {flat: appMain.buttonFlat})
+        tactics.Button(width, height, button[0], {flat: appMain.buttonFlat})
             .addChildTo(this)
             .setPosition(SC_W*0.5, SC_H*0.5)
             .addEventListener("pushed", function() {
@@ -139,7 +139,7 @@ tm.define("shotgun.ConfirmDialog", {
             });
 
         //ＮＯ
-        shotgun.Button(width, height, button[1], {flat: appMain.buttonFlat})
+        tactics.Button(width, height, button[1], {flat: appMain.buttonFlat})
             .addChildTo(this)
             .setPosition(SC_W*0.5, SC_H*0.58)
             .addEventListener("pushed", function() {
@@ -158,7 +158,7 @@ var DEFALT_ALERTPARAM = {
     button: "OK",
 }
 
-tm.define("shotgun.AlertDialog", {
+tm.define("tactics.AlertDialog", {
     superClass: tm.app.Scene,
 
     //ラベル用フォントパラメータ
@@ -199,7 +199,7 @@ tm.define("shotgun.AlertDialog", {
         }
 
         //ボタン
-        shotgun.Button(width, height, param.button, {flat: appMain.buttonFlat})
+        tactics.Button(width, height, param.button, {flat: appMain.buttonFlat})
             .addChildTo(this)
             .setPosition(SC_W*0.5, SC_H*0.55)
             .addEventListener("pushed", function() {
