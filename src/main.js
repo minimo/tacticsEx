@@ -1,6 +1,6 @@
 /*
  *  main.js
- *  2014/06/19
+ *  2014/03/10
  *  @auther minimo  
  *  This Program is MIT license.
  */
@@ -20,46 +20,13 @@ CHEAT = false;
 ENABLE_ACHIEVEMENT = true;
 
 //スクリーンサイズ
-SC_W = 640;
-SC_H = 1136;
-
-//カードサイズ
-CARD_W = 140;
-CARD_H = 210;
-CARD_SCALE = 1;
-
-//スート
-SUIT_SPADE = 0;
-SUIT_CLOVER = 1;
-SUIT_DIAMOND = 2;
-SUIT_HEART = 3;
-SUIT_JOKER = 4;
+SC_W = 1136;
+SC_H = 640;
 
 //ゲームモード
 GAMEMODE_PRACTICE = 0;
 GAMEMODE_NORMAL = 1;
 GAMEMODE_HARD = 2;
-
-//シャッフルが発生する残りカード枚数
-SHUFFLE_LIMIT = 25;
-
-//ジョーカー使用フラグ
-USE_JOKER = true;
-RETURN_JOKER = false;   //使用したジョーカーを場に戻すか
-
-//役一覧
-MISS = -20;
-NOPAIR = -10;
-ONEPAIR = 10;
-FLUSH = 20;
-TWOPAIR = 50;
-THREECARD = 100;
-FULLHOUSE = 200;
-STRAIGHT = 300;
-FOURCARD = 500;
-STRAIGHTFLUSH = 700;
-FIVECARD = 800;
-ROYALSTRAIGHTFLUSH = 1000;
 
 //Use MEDIA TYPE
 MEDIA_ASSET = 0;    //tmlib Asset
@@ -79,6 +46,5 @@ appMain = {};
 //アプリケーションメイン
 tm.main(function() {
     appMain = tactics.CanvasApp("#world");
-    appMain.createHandList();
     appMain.run();
 });

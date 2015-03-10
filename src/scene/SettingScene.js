@@ -13,16 +13,13 @@ tm.define("tactics.SettingScene", {
     se: null,
 
     //ラベル用フォントパラメータ
-    headerParam: {fontFamily:"CasinoRegular", align: "center", baseline:"middle", outlineWidth:2 },
-    labelParam: {fontFamily:"Yasashisa", align: "center", baseline:"middle", outlineWidth:2 },
+    headerParam: {fontFamily:"Orbitron", align: "center", baseline:"middle", outlineWidth:2 },
+    labelParam:  {fontFamily:"Orbitron", align: "center", baseline:"middle", outlineWidth:2 },
 
     init: function() {
         this.superInit();
         this.background = "rgba(0, 0, 0, 0.0)";
         var that = this;
-
-        //スコア消去確認ダイアログ
-        this.dialog = tactics.ConfirmDialog("CLEAR SCORE DATA?", ["YES", "NO"]);
 
         //バックグラウンド
         this.bg = tm.display.RectangleShape({width: SC_W, height: SC_H, fillStyle: appMain.bgColor, strokeStyle: appMain.bgColor})
@@ -38,36 +35,6 @@ tm.define("tactics.SettingScene", {
             .addChildTo(this)
             .setParam(this.labelParam)
             .setPosition(SC_W*0.5, SC_H*0.15);
-
-        //ＢＧＭ音量
-        var volBGM = appMain.volumeBGM;
-        tm.display.OutlineLabel("BGM", 50)
-            .addChildTo(this)
-            .setParam(this.labelParam)
-            .setPosition(SC_W*0.1, SC_H*0.25);
-        this.bgm = [];
-        for (var i = 0; i < 10; i++) {
-            this.bgm[i] = tm.display.Sprite("card", CARD_W, CARD_H)
-                .addChildTo(this)
-                .setScale(0.3)
-                .setPosition(SC_W*0.25+i*44, SC_H*0.25)
-        }
-        this.setVolumeBGM(appMain.volumeBGM);
-
-        //ＳＥ音量
-        var volSE = appMain.volumeSE;
-        tm.display.OutlineLabel("SE", 50)
-            .addChildTo(this)
-            .setParam(this.labelParam)
-            .setPosition(SC_W*0.1, SC_H*0.35);
-        this.se = [];
-        for (var i = 0; i < 10; i++) {
-            this.se[i] = tm.display.Sprite("card", CARD_W, CARD_H)
-                .addChildTo(this)
-                .setScale(0.3)
-                .setPosition(SC_W*0.25+i*44, SC_H*0.35)
-        }
-        this.setVolumeSE(appMain.volumeSE);
 
         //言語選択
         tm.display.OutlineLabel("LANGUAGE", 40)
@@ -102,39 +69,7 @@ tm.define("tactics.SettingScene", {
             this.japanese.toggleON = false;
             this.english.toggleON = true;
         }
-/*
-        tm.display.OutlineLabel("GAME SETTING", 40)
-            .addChildTo(this)
-            .setParam(this.labelParam)
-            .setPosition(SC_W*0.5, SC_H*0.58);
 
-        //ジョーカー戻り設定ボタン
-        var that = this;
-        tm.display.OutlineLabel("RETURN JOKER", 40)
-            .addChildTo(this)
-            .setParam(this.labelParam)
-            .setPosition(SC_W*0.3, SC_H*0.65);
-        var width = 250, height = 80;
-        this.retJoker = tactics.ToggleButton(width, height, "ON", "OFF", {flat: appMain.buttonFlat})
-            .addChildTo(this)
-            .setPosition(SC_W*0.78, SC_H*0.65)
-            .addEventListener("pushed", function() {
-                appMain.returnJoker = that.retJoker.toggleON;
-            });
-        this.retJoker.toggleON = appMain.returnJoker;
-
-        //SCORE CLEAR
-        tm.display.OutlineLabel("SCORE DATA", 40)
-            .addChildTo(this)
-            .setParam(this.labelParam)
-            .setPosition(SC_W*0.3, SC_H*0.75);
-        tactics.Button(width, height, "CLEAR", {flat: appMain.buttonFlat, fontSize:50})
-            .addChildTo(this)
-            .setPosition(SC_W*0.78, SC_H*0.75)
-            .addEventListener("pushed", function() {
-                appMain.pushScene(that.dialog);
-            });
-*/
         //戻るボタン
         var width = SC_W, height = 100;
         tactics.Button(width, height, "RETURN TO TITLE", {flat: appMain.buttonFlat, fontSize:50})

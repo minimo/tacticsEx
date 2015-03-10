@@ -13,6 +13,7 @@ var assets = {
     //BGM
 
     //images
+    "fort":         "assets/Denzi120916-3.png",
     "knight":       "assets/Denzi071022-2.png",
     "monster":      "assets/Denzi071027-6.png",
 

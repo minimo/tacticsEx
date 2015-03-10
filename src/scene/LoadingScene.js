@@ -16,7 +16,7 @@ tm.define("tactics.LoadingScene", {
             assets: assets,
             width: SC_W,
             height: SC_H,
-            bgColor: 'rgba(50, 110, 50, 1)',
+            bgColor: 'rgba(0, 0, 0, 1)',
             nextScene: function() {
                 this._onLoadAssets();
                 return tactics.TitleScene();
@@ -56,8 +56,8 @@ tm.define("tactics.LoadingScene", {
                     init: [{
                         width: SC_W*0.4,
                         height: 20,
-                        color: "red",
-                        bgColor: "rgba(20, 50, 20, 1)",
+                        color: "blue",
+                        bgColor: "rgba(30, 30, 30, 1)",
                         borderColor: "transparent",
                         borderWidth: 0,
                     }],
@@ -160,18 +160,9 @@ tm.define("tactics.LoadingScene", {
         }.bind(this));
     },
     _onLoadAssets: function() {
+/*
         appMain.sounds.add("titleBGM");
-        appMain.sounds.add("mainBGM");
-        appMain.sounds.add("hardBGM");
-        appMain.sounds.add("tutorialBGM");
-        appMain.sounds.add("countdown");
-        appMain.sounds.add("deal");
-        appMain.sounds.add("dist");
-        appMain.sounds.add("hand");
-        appMain.sounds.add("nopair");
-        appMain.sounds.add("extend");
-        appMain.sounds.add("achievement");
-
+*/
         //Admob setting
         if (ENABLE_PHONEGAP && AdMob) {
             AdMob.createBanner({

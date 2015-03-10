@@ -10,14 +10,13 @@ tm.define("tactics.TitleScene", {
     superClass: tm.app.Scene,
 
     //フォントパラメータ
-    labelParam: {fontFamily:"Yasashisa", align: "center", baseline:"middle", outlineWidth:2, fontWeight:700 },
-    scoreParam: {fontFamily:"Yasashisa", align: "left", baseline:"middle", outlineWidth:2 },
+    labelParam: {fontFamily:"Orbitron", align: "center", baseline:"middle", outlineWidth:2, fontWeight:700 },
+    scoreParam: {fontFamily:"Orbitron", align: "left", baseline:"middle", outlineWidth:2 },
 
-    bgColor: 'rgba(50, 150, 50, 1)',
+    bgColor: 'rgba(0, 0, 0, 1)',
 
     init: function() {
         this.superInit();
-        this.background = "rgba(0, 0, 0, 0.0)";
 
         //バックグラウンド
         this.bg = tm.display.RectangleShape({width: SC_W, height: SC_H, fillStyle: appMain.bgColor, strokeStyle: appMain.bgColor})
@@ -54,28 +53,14 @@ tm.define("tactics.TitleScene", {
     },
 
     setupTitle: function() {
-/*
-        var fillStyle = tm.graphics.LinearGradient(-SC_W*0.2, 0, SC_W*0.1, 64)
-            .addColorStopList([
-                { offset: 0.1, color: "hsla(130, 90%, 0%, 0.5)"},
-                { offset: 0.5, color: "hsla(130, 90%, 0%, 0.9)"},
-                { offset: 0.9, color: "hsla(140, 90%, 0%, 0.5)"},
-            ]).toStyle();
-*/
         var fillStyle = "Red";
         var outlineStyle = "White";
         var shadowColor = 'rgba(160, 160, 160, 1)';
 
-        //ショットガンシルエット
-        var sg = tm.display.Sprite("tactics", 640, 250)
-            .addChildTo(this.titleLayer)
-            .setPosition(SC_W*0.5, SC_H*0.2);
-        sg.scaleX = -1;
-        sg.rotation = -10;
-
         //タイトルロゴ
-        tm.display.Sprite("titlelogo", 600, 300)
-            .addChildTo(this.titleLayer)
+        this.logo = tm.display.OutlineLabel("TACTICS 8x8", 80)
+            .addChildTo(this)
+            .setParam(this.labelParam)
             .setPosition(SC_W*0.5, SC_H*0.2);
 
         var that = this;
@@ -89,50 +74,6 @@ tm.define("tactics.TitleScene", {
             .setPosition(SC_W*0.5, y)
             .addEventListener("pushed", function() {
                 that.buttonLock(true);
-
-                that.start.tweener.clear().moveBy(0, SC_H, 500, "easeInQuint");
-                that.tutorial.tweener.clear().moveBy(0, SC_H, 500, "easeInQuint");
-                that.option.tweener.clear().moveBy(0, SC_H, 500, "easeInQuint");
-                that.credit.tweener.clear().moveBy(0, SC_H, 500, "easeInQuint");
-                that.ranking.tweener.clear().moveBy(0, SC_H, 500, "easeInQuint");
-
-                that.normal.tweener.clear().wait(300).fadeIn(300).call(function(){that.normal.setLock(false);});
-                that.hard.tweener.clear().wait(300).fadeIn(300).call(function(){that.hard.setLock(false);});
-//                that.practice.tweener.clear().wait(300).fadeIn(300).call(function(){that.practice.setLock(false);});
-                that.retJoker_label.tweener.clear().wait(300).fadeIn(300);
-                that.retJoker.tweener.clear().wait(300).fadeIn(300).call(function(){that.retJoker.setLock(false);});
-                that.ret.tweener.clear().wait(300).fadeIn(300).call(function(){that.ret.setLock(false);});
-                that.retJoker.toggleON = appMain.returnJoker;
-            });
-
-        //チュートリアル
-        y+=space;
-        this.tutorial = tactics.Button(width, height, "TUTORIAL", param)
-            .addChildTo(this.titleLayer)
-            .setPosition(SC_W*0.5, y)
-            .addEventListener("pushed", function() {
-                that.buttonLock(true);
-                that.titleLayer.tweener.clear()
-                    .moveBy(-SC_W, 0, 500, "easeOutQuint")
-                    .call(function(){
-                        appMain.pushScene(tactics.TutorialScene());
-                    })
-                    .moveBy(SC_W, 0, 500, "easeOutQuint");
-            });
-
-        //RANKING
-        y+=space;
-        this.ranking = tactics.Button(width, height, "RANKING", param)
-            .addChildTo(this.titleLayer)
-            .setPosition(SC_W*0.5, y)
-            .addEventListener("pushed", function() {
-                that.buttonLock(true);
-                if (appMain.highScore[GAMEMODE_NORMAL]    != 0) submitScore(GAMEMODE_NORMAL, false, appMain.highScore[GAMEMODE_NORMAL]);
-                if (appMain.highScore[GAMEMODE_NORMAL+10] != 0) submitScore(GAMEMODE_NORMAL, true , appMain.highScore[GAMEMODE_NORMAL+10]);
-                if (appMain.highScore[GAMEMODE_HARD]      != 0) submitScore(GAMEMODE_HARD  , false, appMain.highScore[GAMEMODE_HARD]);
-                if (appMain.highScore[GAMEMODE_HARD+10]   != 0) submitScore(GAMEMODE_HARD  , true , appMain.highScore[GAMEMODE_HARD+10]);
-                showLeadersBoard();
-                that.buttonLock(false);
             });
 
         //クレジット
@@ -162,79 +103,6 @@ tm.define("tactics.TitleScene", {
                     });
             });
 
-        //ノーマルモード
-        this.normal = tactics.Button(width, height, "NORMAL", param)
-            .addChildTo(this.titleLayer)
-            .setPosition(SC_W*0.5, SC_H*0.40)
-            .setAlpha(0)
-            .setLock(true)
-            .addEventListener("pushed", function() {
-                appMain.bonusLife = 0;
-                that.mask.tweener.clear().fadeIn(200).call(function(){appMain.replaceScene(tactics.MainScene(GAMEMODE_NORMAL));});
-            });
-
-        //ハードモード
-        this.hard = tactics.Button(width, height, "HARD", param)
-            .addChildTo(this.titleLayer)
-            .setPosition(SC_W*0.5, SC_H*0.50)
-            .setAlpha(0)
-            .setLock(true)
-            .addEventListener("pushed", function() {
-                appMain.bonusLife = 0;
-                that.mask.tweener.clear().fadeIn(200).call(function(){appMain.replaceScene(tactics.MainScene(GAMEMODE_HARD));});
-            });
-
-        //プラクティスモード
-/*
-        this.practice = tactics.Button(width, height, "PRACTICE", param)
-            .addChildTo(this.titleLayer)
-            .setPosition(SC_W*0.5, SC_H*0.60)
-            .setAlpha(0)
-            .setLock(true)
-            .addEventListener("pushed", function() {
-                appMain.bonusLife = 0;
-                that.mask.tweener.clear().fadeIn(200).call(function(){appMain.replaceScene(tactics.MainScene(GAMEMODE_PRACTICE));});
-            });
-*/
-        //ジョーカー戻り設定ボタン
-        var that = this;
-        this.retJoker_label = tm.display.OutlineLabel("RETURN JOKER", 40)
-            .addChildTo(this)
-            .setParam(this.labelParam)
-            .setPosition(SC_W*0.5, SC_H*0.58)
-            .setAlpha(0);
-        this.retJoker = tactics.ToggleButton(300, 80, "ON", "OFF", param)
-            .addChildTo(this)
-            .setPosition(SC_W*0.5, SC_H*0.65)
-            .setAlpha(0)
-            .setLock(true)
-            .addEventListener("pushed", function() {
-                appMain.returnJoker = that.retJoker.toggleON;
-                appMain.saveConfig();
-            });
-        this.retJoker.toggleON = appMain.returnJoker;
-
-        //戻る
-        this.ret = tactics.Button(width, height, "RETURN", param)
-            .addChildTo(this.titleLayer)
-            .setPosition(SC_W*0.5, SC_H*0.75)
-            .setAlpha(0)
-            .setLock(true)
-            .addEventListener("pushed", function() {
-                that.buttonLock(false);
-                that.start.tweener.clear().moveBy(0, -SC_H, 500, "easeOutQuint");
-                that.tutorial.tweener.clear().moveBy(0, -SC_H, 500, "easeOutQuint");
-                that.option.tweener.clear().moveBy(0, -SC_H, 500, "easeOutQuint");
-                that.credit.tweener.clear().moveBy(0, -SC_H, 500, "easeOutQuint");
-                that.ranking.tweener.clear().moveBy(0, -SC_H, 500, "easeOutQuint");
-
-                that.normal.tweener.clear().call(function(){that.normal.setLock(true);}).fadeOut(300);
-                that.hard.tweener.clear().call(function(){that.hard.setLock(true);}).fadeOut(300);
-//                that.practice.tweener.clear().call(function(){that.practice.setLock(true);}).fadeOut(300);
-                that.retJoker_label.tweener.clear().fadeOut(300);
-                that.retJoker.tweener.clear().call(function(){that.retJoker.setLock(true);}).fadeOut(300);
-                that.ret.tweener.clear().call(function(){that.ret.setLock(true);}).fadeOut(300);
-            });
 
         //バージョン表示
         tm.display.OutlineLabel("Version "+appMain.version, 30)
@@ -245,10 +113,8 @@ tm.define("tactics.TitleScene", {
 
     buttonLock: function(b) {
         this.start.setLock(b);
-        this.tutorial.setLock(b);
         this.option.setLock(b);
         this.credit.setLock(b);
-        this.ranking.setLock(b);
     },
 
     addButton: function(page, finish) {
@@ -303,36 +169,6 @@ tm.define("tactics.TitleScene", {
     },
 
     update: function() {
-        if (appMain.firstGame) {
-            appMain.pushScene(tactics.SelectLanguageScene());
-//            appMain.pushScene(tactics.TutorialScene());
-        }
-        if (this.time % 7 == 0) {
-            var c = tm.display.Sprite("card", CARD_W, CARD_H)
-                .addChildTo(this.underLayer)
-                .setPosition(rand(0, SC_W), -100-rand(0, 50))
-                .setFrameIndex(rand(0, 54));
-            var d = rand(0, 10);
-            if (d == 3) c.setFrameIndex(52);
-            if (d == 4) c.setFrameIndex(53);
-            c.update = function() {
-                this.rotation+=this.vr;
-                this.y+=this.vy;
-                if (this.y > SC_H*1.2) {this.remove();}
-            }
-            c.vr = rand(-5, 5) || 1;
-            c.vy = rand(5, 15);
-            c.setScale(rand(7, 10)/10);
-        }
-
-        //ハイスコアを自動登録
-        if (this.time == 60) {
-            if (appMain.highScore[GAMEMODE_NORMAL]    != 0) submitScore(GAMEMODE_NORMAL, false, appMain.highScore[GAMEMODE_NORMAL]);
-            if (appMain.highScore[GAMEMODE_NORMAL+10] != 0) submitScore(GAMEMODE_NORMAL, true , appMain.highScore[GAMEMODE_NORMAL+10]);
-            if (appMain.highScore[GAMEMODE_HARD]      != 0) submitScore(GAMEMODE_HARD  , false, appMain.highScore[GAMEMODE_HARD]);
-            if (appMain.highScore[GAMEMODE_HARD+10]   != 0) submitScore(GAMEMODE_HARD  , true , appMain.highScore[GAMEMODE_HARD+10]);
-        }
-
         //スクリーンショット保存
         var kb = appMain.keyboard;
         if (kb.getKeyDown("s")) appMain.canvas.saveAsImage();

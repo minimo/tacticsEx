@@ -33,28 +33,6 @@ tm.define("tactics.PauseScene", {
             .setParam(this.headerParam)
             .setPosition(SC_W*0.5, SC_H*0.1);
 
-        var lb = tm.display.OutlineLabel("YOUR HAND LIST", 40)
-            .addChildTo(this)
-            .setParam(this.labelParam)
-            .setPosition(SC_W*0.5, SC_H*0.175);
-
-        for (var i = 0; i < 12; i++) {
-            var handName = $trans(appMain.handList[i].name);
-            tm.display.OutlineLabel(handName+":"+parentScene.handCount[appMain.handList[i].point], 35)
-                .addChildTo(this)
-                .setParam(this.scoreParam)
-                .setPosition(SC_W*0.2, SC_H*0.25+(i*45));
-        }
-
-        if (parentScene.complete) {
-            tm.display.OutlineLabel("COMPLETE!!", 35)
-                .addChildTo(this)
-                .setParam(this.labelParam)
-                .setFillStyle("Red")
-                .setFillStyleOutline("rgb(255,200,200)")
-                .setPosition(SC_W*0.5, SC_H*0.21);
-        }
-
         var that = this;
         var width = SC_W, height = 100;
         var param = {fillStyle:'rgba(0,80,0,1)', lineWidth:4};
@@ -107,7 +85,7 @@ tm.define("tactics.ConfirmDialog", {
     answer: null,
 
     //ラベル用フォントパラメータ
-    labelParam: {fontFamily:"Yasashisa", align: "center", baseline:"middle", outlineWidth:4 },
+    labelParam: {fontFamily:"Orbitron", align: "center", baseline:"middle", outlineWidth:4 },
 
     init: function(caption, button, fontSize) {
         this.superInit();
