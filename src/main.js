@@ -46,5 +46,6 @@ appMain = {};
 //アプリケーションメイン
 tm.main(function() {
     appMain = tactics.CanvasApp("#world");
+    appMain.enableStats();
     appMain.run();
 });

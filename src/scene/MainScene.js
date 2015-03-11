@@ -28,32 +28,15 @@ tm.define("tactics.MainScene", {
     //遷移情報
     exitGame: false,
 
-    //ラベル用パラメータ
-    labelParamBasic: {fontFamily: "Yasashisa", align: "left", baseline: "middle",outlineWidth: 3, fontWeight:700},
-    labelParamBasicCenter: {fontFamily: "Yasashisa'", align: "center", baseline: "middle",outlineWidth: 3, fontWeight:700},
-    labelParamPoker: {fontFamily: "CasinoRegular",align: "center", baseline: "middle", outlineWidth: 3},
-    labelParamHand:  {fontFamily: "CasinoRegular",align: "left", baseline: "middle", outlineWidth: 3},
-    labelParamBefore:{fontFamily: "Yasashisa",align: "left", baseline: "top", outlineWidth: 3, fontWeight:700},
-    labelParamModeName: {fontFamily: "Yasashisa", align: "right", baseline: "middle",outlineWidth: 3, fontWeight:700},
+    //マップ情報
+    world: null,
 
-    init: function(mode) {
+    //ラベル用パラメータ
+    labelParam: {fontFamily: "Orbitron", align: "left", baseline: "middle",outlineWidth: 3, fontWeight:700},
+
+    init: function() {
         this.superInit();
         this.background = "rgba(0, 0, 0, 0.0)";
-
-        //ゲームモード
-        if (mode === undefined) mode = GAMEMODE_NORMAL;
-        this.mode = mode;
-
-        //ボーナス貰ってるか判定
-        if (appMain.bonusLife != 0) this.bonus = true;
-
-        //ハードモードはライフ無し
-        if (this.mode == GAMEMODE_HARD) {
-            this.life = 0;
-            this.level = 2.5;
-            this.levelReset = 1;
-            this.absTime = ~~(30*60*3.5);
-        }
 
         //バックグラウンド
         this.bg = tm.display.RectangleShape({width: SC_W, height: SC_H, fillStyle: appMain.bgColor, strokeStyle: appMain.bgColor})
@@ -68,6 +51,10 @@ tm.define("tactics.MainScene", {
         this.mainLayer = tm.app.Object2D().addChildTo(this);
         this.upperLayer = tm.app.Object2D().addChildTo(this);
 
+        this.world = tactics.WorldMap()
+            .addChildTo(this.lowerLayer)
+            .setPosition(SC_W*0.05, SC_H*0.1);
+
         //目隠し
         this.mask = tm.display.RectangleShape({width: SC_W, height: SC_H, fillStyle: "rgba(0, 0, 0, 1.0)", strokeStyle: "rgba(0, 0, 0, 1.0)"})
             .addChildTo(this)
@@ -81,6 +68,9 @@ tm.define("tactics.MainScene", {
         if (kb.getKeyDown("s")) appMain.canvas.saveAsImage();
 
         this.time++;
+    },
+
+    setupWorld: function() {
     },
 
     //タッチorクリック開始処理
@@ -106,18 +96,6 @@ tm.define("tactics.MainScene", {
         var sy = e.pointing.y;
         var moveX = Math.abs(sx - this.beforeX);
         var moveY = Math.abs(sx - this.beforeY);
-
-        if (!this.shuffled) {
-            if (moveX > 200) {
-                this.deck.shuffle();
-                this.shuffled = true;
-            }
-        }
-
-        if (this.time % 10 == 0) {
-            this.beforeX = sx;
-            this.beforeY = sy;
-        }
     },
 
     //タッチorクリック終了処理
@@ -127,12 +105,6 @@ tm.define("tactics.MainScene", {
 
         var sx = e.pointing.x;
         var sy = e.pointing.y;
-
-        if (this.pick && !this.shuffled && !this.deck.busy && !this.gameend) {
-            var c = this.deck.pick(sx, sy);
-            if (c) this.deck.addHand(c);
-        }
-        this.shuffled = false;
     },
 });
 

@@ -4,93 +4,50 @@
  *  @auther minimo  
  *  This Program is MIT license.
  */
- 
+
+//マップチップ
+tm.define("tactics.MapChip", {
+    superClass: "tm.display.Sprite",
+
+    init: function() {
+        this.superInit("mapchip", 32, 16);
+        this.setFrameTrimming(16, 16);
+        this.setFrameIndex(0);
+        this.setScale(2);
+    },
+});
+
 //マップ
 tm.define("tactics.WorldMap", {
     superClass: "tm.display.CanvasElement",
 
-    app: null,
-
     //Worldクラス
     world: null,
 
-    //サイズ
-    size: 100,
+    //マップ上
+    mapW: 16,
+    mapH: 32,
+    map: [],
 
-    //マウスオーバーフラグ
-    mouseover: false,
-
-    init: function(x, y, size, world) {
+    init: function(world) {
         this.superInit();
-        this.app = app;
         this.blendMode = "lighter";
-        this.x = x || 0;
-        this.y = y || 0;
-        this.size = size || 100;
         this.world = world || null;
+
+        for(var y = 0; y < this.mapH; y++) {
+            this.map[y] = [];
+            for(var x = 0; x < this.mapW; x++) {
+                var mx = x*64+(y%2?0:32);
+                var my = y*16;
+                this.map[y][x] = tactics.MapChip()
+                    .addChildTo(this)
+                    .setPosition(mx, my);
+            }
+        }
+        
+
     },
 
     update: function() {
     },
-
-    draw: function(canvas) {
-        if (!this.mouseover) {
-            this.alpha+=0.1;
-            if (this.alpha > 1.0)this.alpha = 1.0;
-        } else {
-            this.alpha-=0.1;
-            if (this.alpha < 0.0)this.alpha = 0.0;
-        }
-        canvas.lineWidth = 16;
-        canvas.globalCompositeOperation = "source-over";
-        canvas.fillStyle = "rgba(64, 64, 64, 0.8)";
-        canvas.fillRect(0, 0, this.size, this.size);
-
-        if (this.world) {
-            //画面範囲の描画
-            canvas.fillStyle = "rgba(100, 100, 100, 0.9)";
-            var rateW = this.size/this.world.size/this.world.scaleX;      //全体マップと表示マップの比率
-            var rateH = this.size/this.world.size/this.world.scaleY;
-
-            var sx = -this.world.base.x*rateW;
-            var sy = -this.world.base.y*rateH;
-            var sw = SC_W*rateW;
-            var sh = SC_H*rateH;
-            canvas.fillRect(sx, sy, sw, sh);
-
-            //惑星位置の描画
-            for (var i = 0, len = this.world.planets.length; i < len; i++) {
-                var p = this.world.planets[i];
-                switch (p.alignment) {
-                    case TYPE_NEUTRAL:
-                        canvas.fillStyle = "white";
-                        break;
-                    case TYPE_PLAYER:
-                        canvas.fillStyle = "aqua";
-                        break;
-                    case TYPE_ENEMY:
-                        canvas.fillStyle = "red";
-                        break;
-                }
-                var x = (p.x/this.world.size)*this.size;
-                var y = (p.y/this.world.size)*this.size;
-                canvas.fillCircle(x, y, 3*p.power);
-            }
-            //ユニット位置の描画
-            for (var i = 0, len = this.world.units.length; i < len; i++) {
-                var u = this.world.units[i];
-                switch (u.alignment) {
-                    case TYPE_PLAYER:
-                        canvas.fillStyle = "aqua";
-                        break;
-                    case TYPE_ENEMY:
-                        canvas.fillStyle = "red";
-                        break;
-                }
-                var x = (u.x/this.world.size)*this.size;
-                var y = (u.y/this.world.size)*this.size;
-                canvas.fillRect(x-1, y-1, 2, 2);
-            }
-        }
-    }
 });

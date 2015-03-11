@@ -32,14 +32,14 @@ tm.define("tactics.World", {
     //最大惑星数
     maxPlanets: 20,
 
-    //惑星リスト
-    planets: null,
+    //砦リスト
+    forts: null,
 
     //ユニットリスト
     units: null,
 
-    //惑星ＩＤ連番
-    planetID: 0,
+    //砦ＩＤ連番
+    fortID: 0,
 
     //ユニットＩＤ連番
     unitID: 0,
@@ -54,7 +54,7 @@ tm.define("tactics.World", {
     init: function(scene) {
         this.superInit();
         this.scene = scene;
-        this.planets = [];
+        this.forts = [];
         this.units = [];
 
         this.base = tm.app.Object2D();
@@ -90,8 +90,8 @@ tm.define("tactics.World", {
         }
 
         //惑星対ユニット攻撃判定
-        for (var i = 0, len = this.planets.length; i < len; i++) {
-            var planet = this.planets[i];
+        for (var i = 0, len = this.forts.length; i < len; i++) {
+            var planet = this.forts[i];
             for (var j = 0, len2 = this.units.length; j < len2; j++) {
                 var unit = this.units[j];
                 if (!unit.active)continue;
@@ -191,8 +191,8 @@ tm.define("tactics.World", {
             var y = rn.nextInt(96, this.size-96);
             var ok = true;
             //一定距離内に配置済み惑星が無いか確認
-            for (var j = 0; j < this.planets.length; j++) {
-                var p = this.planets[j];
+            for (var j = 0; j < this.forts.length; j++) {
+                var p = this.forts[j];
                 var dx = p.x-x, dy = p.y-y;
                 var dis = dx*dx+dy*dy;
                 if (dis < 17424){ok = false;break;} //132*132
@@ -386,8 +386,8 @@ tm.define("tactics.World", {
     getPlanet: function(x, y){
         var bd = 99999999;
         var pl = null;
-        for (var i = 0; i < this.planets.length; i++) {
-            var p = this.planets[i];
+        for (var i = 0; i < this.forts.length; i++) {
+            var p = this.forts[i];
             var dx = p.x-x;
             var dy = p.y-y;
             var dis = dx*dx+dy*dy;
@@ -401,17 +401,17 @@ tm.define("tactics.World", {
 
     //特定陣営の惑星を配列で取得
     getPlanetGroup: function(alignment) {
-        var planets = [];
-        for (var i = 0; i < this.planets.length; i++) {
-            if (this.planets[i].alignment == alignment) planets.push(this.planets[i]);
+        var forts = [];
+        for (var i = 0; i < this.forts.length; i++) {
+            if (this.forts[i].alignment == alignment) forts.push(this.forts[i]);
         }
-        return planets.length == 0? null : planets;
+        return forts.length == 0? null : forts;
     },
 
     //特定陣営の惑星を選択／非選択にする
     selectPlanetGroup: function(alignment, select) {
-        for (var i = 0; i < this.planets.length; i++) {
-            if (this.planets[i].alignment == alignment) this.planets[i].select = select;
+        for (var i = 0; i < this.forts.length; i++) {
+            if (this.forts[i].alignment == alignment) this.forts[i].select = select;
         }
     },
 
@@ -461,8 +461,8 @@ tm.define("tactics.World", {
     //惑星戦力合計を算出
     getPowerOfPlanet: function(alignment) {
         var val = 0;
-        for (var i = 0, len = this.planets.length; i < len; i++) {
-            var p = this.planets[i];
+        for (var i = 0, len = this.forts.length; i < len; i++) {
+            var p = this.forts[i];
             if (p.alignment == alignment) val += p.HP;
         }
         return val;
@@ -492,7 +492,7 @@ tm.define("tactics.World", {
         if (child instanceof tactics.Planet) {
             child.world = this;
             this.layers[LAYER_PLANET].addChild(child);
-            this.planets[this.planets.length] = child;
+            this.forts[this.forts.length] = child;
             return;
         }
 

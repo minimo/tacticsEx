@@ -64,7 +64,7 @@ tm.define("tactics.TitleScene", {
             .setPosition(SC_W*0.5, SC_H*0.2);
 
         var that = this;
-        var width = SC_W, height = 100;
+        var width = SC_W*0.4, height = 100;
         var y = SC_H*0.4, space = 115;
         var param = {flat: appMain.buttonFlat, fontSize: 50};
 
@@ -74,6 +74,11 @@ tm.define("tactics.TitleScene", {
             .setPosition(SC_W*0.5, y)
             .addEventListener("pushed", function() {
                 that.buttonLock(true);
+                that.mask.tweener.clear()
+                    .fadeIn(200)
+                    .call(function(){
+                        appMain.pushScene(tactics.MainScene());
+                    });
             });
 
         //クレジット
