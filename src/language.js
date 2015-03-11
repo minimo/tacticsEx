@@ -1,6 +1,6 @@
 /*
  *  language.js
- *  2014/10/23
+ *  2015/03/10
  *  @auther minimo  
  *  This Program is MIT license.
  */

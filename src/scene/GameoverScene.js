@@ -1,6 +1,6 @@
 /*
  *  GameoverScene.js
- *  2014/06/23
+ *  2015/03/10
  *  @auther minimo  
  *  This Program is MIT license.
  *

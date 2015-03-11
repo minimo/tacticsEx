@@ -1,6 +1,6 @@
 /*
  *  DeviceEvents.js
- *  2014/07/15
+ *  2015/03/10
  *  @auther minimo  
  *  This Program is MIT license.
  */

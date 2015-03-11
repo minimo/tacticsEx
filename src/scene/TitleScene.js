@@ -1,6 +1,6 @@
 ﻿/*
  *  TitleScene.js
- *  2014/06/19
+ *  2015/03/10
  *  @auther minimo  
  *  This Program is MIT license.
  *

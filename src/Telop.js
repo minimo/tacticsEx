@@ -1,6 +1,6 @@
 /*
  *  Telop.js
- *  2015/02/05
+ *  2015/03/10
  *  @auther minimo  
  *  This Program is MIT license.
  */
