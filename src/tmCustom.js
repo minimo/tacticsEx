@@ -41,7 +41,7 @@ tm.display.Sprite.prototype.setFrameTrimming = function(x, y, width, height) {
     return this;
 }
 
-//アニメーションスプライト拡張
+//tm.display.AnimationSprite拡張
 tm.display.AnimationSprite.prototype.currentAnimationName = null;
 tm.display.AnimationSprite.prototype._gotoAndPlay = tm.display.AnimationSprite.prototype.gotoAndPlay;
 tm.display.AnimationSprite.prototype._gotoAndStop = tm.display.AnimationSprite.prototype.gotoAndStop;
@@ -80,3 +80,16 @@ tm.display.AnimationSprite.prototype._normalizeFrame = function() {
 }
 
 
+//tm.display.Label拡張
+//パラメータ一括セット
+tm.display.Label.setParam = function(param) {
+    this.fontFamily       = param.fontFamily       || this.fontFamily;
+    this.align            = param.align            || this.align;
+    this.baseline         = param.baseline         || this.baseline;
+    this.fontSize         = param.fontSize         || this.fontSize
+    this.fontWeight       = param.fontWeight       || this.fontWeight;
+    this.fillStyle        = param.fillStyle        || this.fillStyle;
+    this.fillStyleOutline = param.fillStyleOutline || this.fillStyleOutline;
+    this.outlineWidth     = param.outlineWidth     || this.outlineWidth;
+    return this;
+}

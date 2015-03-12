@@ -39,12 +39,13 @@ tm.define("tactics.WorldMap", {
         this.base = tm.display.Sprite("mapbase")
             .addChildTo(this)
             .setOrigin(0, 0)
-            .setPosition(-32,-16);
+            .setPosition(0,0);
     },
 
     update: function() {
     },
 
+    //マップの基部作成
     setupBaseMap: function() {
         for(var y = 0; y < this.mapH; y++) {
             this.map[y] = [];
@@ -54,8 +55,23 @@ tm.define("tactics.WorldMap", {
                 if (y%2 == 1 && x == this.mapW-1) break;
                 this.map[y][x] = tactics.MapChip()
                     .addChildTo(this)
-                    .setPosition(mx, my);
+                    .setPosition(mx+32, my+16);
             }
         }
+    },
+
+    //スクリーン座標からマップ座標へ変換
+    screenToMap: function(x, y) {
+        x -= this.x;
+        y -= this.y;
+
+        var w = 32, h = 16;
+        var qx = Math.floor(x/w/2);
+        var qy = Math.floor(y/h/2);
+
+        var mx = Math.floor((x/w/2)+(y/h/2));
+     	var my = Math.floor((x/w/2)-(y/h/2));
+
+     	return {x: qx, y: qy};
     },
 });

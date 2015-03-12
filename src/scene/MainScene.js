@@ -55,6 +55,12 @@ tm.define("tactics.MainScene", {
             .addChildTo(this.lowerLayer)
             .setPosition(32, 16);
 
+        this.test = tm.display.Label("x:0 y:0")
+            .addChildTo(this)
+            .setPosition(32, 32)
+            .setParam({fontFamily:"Orbitron", align: "left", baseline:"middle", outlineWidth:2 });
+
+
         //目隠し
         this.mask = tm.display.RectangleShape({width: SC_W, height: SC_H, fillStyle: "rgba(0, 0, 0, 1.0)", strokeStyle: "rgba(0, 0, 0, 1.0)"})
             .addChildTo(this)
@@ -91,6 +97,9 @@ tm.define("tactics.MainScene", {
     //タッチorクリック移動処理
     ontouchesmove: function(e) {
         if (this.touchID != e.ID) return;
+
+        var mp = this.world.screenToMap(e.pointing.x, e.pointing.y);
+        this.test.text = "x:"+mp.x+" y:"+mp.y;
 
         var sx = e.pointing.x;
         var sy = e.pointing.y;
