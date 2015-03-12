@@ -65,13 +65,45 @@ tm.define("tactics.WorldMap", {
         x -= this.x;
         y -= this.y;
 
-        var w = 32, h = 16;
-        var qx = Math.floor(x/w/2);
-        var qy = Math.floor(y/h/2);
+        var w = 64, h = 32;
+        var mx = Math.floor(x/w);
+        var my = Math.floor(y/h)*2;
 
-        var mx = Math.floor((x/w/2)+(y/h/2));
-     	var my = Math.floor((x/w/2)-(y/h/2));
+        //象限の判定
+        var qx = Math.floor(x-mx*w);
+        var qy = Math.floor(y-my*h/2);
 
-     	return {x: qx, y: qy};
+        //第一象限（右上）
+        if (qx > 32 && qy < 16) {
+            var x2 = qx-32;
+            var y2 = qy;
+            if (x2/2 > y2) my--;
+        } else
+        //第二象限（左上）
+        if (qx < 32 && qy < 16) {
+            var x2 = qx;
+            var y2 = qy;
+            if (16-x2/2 > y2) {
+                mx--;
+                my--;
+            }
+        } else
+        //第三象限（左下）
+        if (qx < 32 && qy > 16) {
+            var x2 = qx;
+            var y2 = qy-16;
+            if (x2/2 < y2) {
+                mx--;
+                my++;
+            }
+        } else
+        //第四象限（右下）
+        if (qx > 32 && qy > 16) {
+            var x2 = qx-32;
+            var y2 = qy-16;
+            if (16-x2/2 < y2) my++;
+        }
+
+    	return {x: mx, y: my};
     },
 });
