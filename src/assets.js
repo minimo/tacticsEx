@@ -13,6 +13,7 @@ var assets = {
     //BGM
 
     //images
+    "mapbase":      "assets/mapbase.png",
     "mapchip":      "assets/Denzi111023-1.png",
     "fort":         "assets/Denzi120916-3.png",
     "knight":       "assets/Denzi071022-2.png",

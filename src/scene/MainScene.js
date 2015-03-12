@@ -53,7 +53,7 @@ tm.define("tactics.MainScene", {
 
         this.world = tactics.WorldMap()
             .addChildTo(this.lowerLayer)
-            .setPosition(SC_W*0.05, SC_H*0.1);
+            .setPosition(32, 16);
 
         //目隠し
         this.mask = tm.display.RectangleShape({width: SC_W, height: SC_H, fillStyle: "rgba(0, 0, 0, 1.0)", strokeStyle: "rgba(0, 0, 0, 1.0)"})

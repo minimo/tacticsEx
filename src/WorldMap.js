@@ -25,8 +25,8 @@ tm.define("tactics.WorldMap", {
     world: null,
 
     //マップ上
-    mapW: 16,
-    mapH: 32,
+    mapW: 17,
+    mapH: 33,
     map: [],
 
     init: function(world) {
@@ -34,20 +34,28 @@ tm.define("tactics.WorldMap", {
         this.blendMode = "lighter";
         this.world = world || null;
 
+//        this.setupBaseMap();
+
+        this.base = tm.display.Sprite("mapbase")
+            .addChildTo(this)
+            .setOrigin(0, 0)
+            .setPosition(-32,-16);
+    },
+
+    update: function() {
+    },
+
+    setupBaseMap: function() {
         for(var y = 0; y < this.mapH; y++) {
             this.map[y] = [];
             for(var x = 0; x < this.mapW; x++) {
-                var mx = x*64+(y%2?0:32);
+                var mx = x*64+(y%2?32:0);
                 var my = y*16;
+                if (y%2 == 1 && x == this.mapW-1) break;
                 this.map[y][x] = tactics.MapChip()
                     .addChildTo(this)
                     .setPosition(mx, my);
             }
         }
-        
-
-    },
-
-    update: function() {
     },
 });
