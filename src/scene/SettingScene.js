@@ -40,11 +40,11 @@ tm.define("tactics.SettingScene", {
         tm.display.OutlineLabel("LANGUAGE", 40)
             .addChildTo(this)
             .setParam(this.labelParam)
-            .setPosition(SC_W*0.5, SC_H*0.50);
+            .setPosition(SC_W*0.5, SC_H*0.6);
         var width = 250, height = 90;
         this.japanese = tactics.ToggleButton(width, height, "日本語", "日本語", {flat: appMain.buttonFlat, fontSize:40})
             .addChildTo(this)
-            .setPosition(SC_W*0.25, SC_H*0.57)
+            .setPosition(SC_W*0.25, SC_H*0.6)
             .addEventListener("pushed", function() {
                 if (this.toggleON) {
                     appMain.language = "JAPANESE";
@@ -54,7 +54,7 @@ tm.define("tactics.SettingScene", {
             });
         this.english = tactics.ToggleButton(width, height, "English", "English", {flat: appMain.buttonFlat, fontSize:40})
             .addChildTo(this)
-            .setPosition(SC_W*0.75, SC_H*0.57)
+            .setPosition(SC_W*0.75, SC_H*0.6)
             .addEventListener("pushed", function() {
                 if (this.toggleON) {
                     appMain.language = "ENGLISH";
