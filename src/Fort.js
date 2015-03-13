@@ -5,14 +5,12 @@
  *  This Program is MIT license.
  */
 
-//惑星管理クラス
-tm.define("tactics.Planet", {
-    superClass: tm.display.Sprite,    
+//砦管理クラス
+tm.define("tactics.Fort", {
+    superClass: tm.display.Sprite,
 
-    //惑星ＩＤ
     ID: 0,
 
-    //惑星タイプ
     //0: 中立
     //1: プレイヤー
     //2: エネミー
@@ -62,7 +60,9 @@ tm.define("tactics.Planet", {
 
         var that = this;
         //選択カーソル
-        this.cursor = tm.display.CircleShape(80, 80, {
+        this.cursor = tm.display.CircleShape({
+            width: 80,
+            height: 80,
             fillStyle: "rgba(0,0,0,0)",
             strokeStyle: tm.graphics.LinearGradient(0,0,0,80).addColorStopList([
                 { offset:0.0, color:"rgba(0,255,0,0.0)" },
