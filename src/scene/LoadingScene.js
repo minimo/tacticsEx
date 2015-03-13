@@ -160,6 +160,8 @@ tm.define("tactics.LoadingScene", {
         }.bind(this));
     },
     _onLoadAssets: function() {
+        //スプライトシート作成
+        tactics.createSpriteSheet();
 /*
         appMain.sounds.add("titleBGM");
 */

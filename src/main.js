@@ -40,6 +40,15 @@ MEDIA_DEFAULT = MEDIA_ASSET;
 fps = 60;
 var sec = function(s) { return ~~(fps * s);}    //秒からフレーム数へ変換
 
+//表示レイヤー
+LAYER_SYSTEM = 6;           //システム表示
+LAYER_FOREGROUND = 5;       //フォアグラウンド
+LAYER_EFFECT_UPPER = 4;     //エフェクト上位
+LAYER_UNIT = 3;             //ユニット
+LAYER_EFFECT_LOWER = 2;     //エフェクト下位
+LAYER_PLANET = 1;           //惑星
+LAYER_BACKGROUND = 0;       //バックグラウンド
+
 //インスタンス
 appMain = {};
 

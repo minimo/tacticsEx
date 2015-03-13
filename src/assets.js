@@ -14,10 +14,12 @@ var assets = {
 
     //images
     "mapbase":      "assets/mapbase.png",
-    "mapchip":      "assets/Denzi111023-1.png",
-    "fort":         "assets/Denzi120916-3.png",
-    "knight":       "assets/Denzi071022-2.png",
-    "monster":      "assets/Denzi071027-6.png",
+    "mapchip":      "assets/mapchip.png",
+    "fort":         "assets/fort.png",
+    "knight":       "assets/knight.png",
+    "monster":      "assets/monster.png",
+    "normal":       "assets/normal.png",
+    "explode":      "assets/explode.png",
     "tmliblogo":    "assets/tmlib_logo.png",
 
     //SE
