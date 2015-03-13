@@ -25,6 +25,10 @@ tm.define("tactics.World", {
     //スプライトレイヤー
     layers: null,
 
+    //マップサイズ
+    mapW: 17,
+    mapH: 33,
+
     //最大砦数
     maxForts: 20,
 
@@ -53,7 +57,7 @@ tm.define("tactics.World", {
         this.forts = [];
         this.units = [];
 
-        this.base = tm.app.Object2D().setOrigin(0, 0);
+        this.base = tm.display.Sprite("mapbase").setOrigin(0, 0);
         this.superClass.prototype.addChild.call(this, this.base);
 
         //表示レイヤー構築（数字が大きい程優先度が高い）
@@ -62,12 +66,27 @@ tm.define("tactics.World", {
             this.layers[i] = tm.app.Object2D().addChildTo(this.base);
         }
 
-        this.map = tactics.WorldMap().addChildTo(this).setOrigin(0,0);
+//        this.map = tactics.WorldMap().addChildTo(this).setOrigin(0,0);
     },
 
     update: function() {
     },
     
+    //マップの基部作成
+    setupBaseMap: function() {
+        for(var y = 0; y < this.mapH; y++) {
+            this.map[y] = [];
+            for(var x = 0; x < this.mapW; x++) {
+                var mx = x*64+(y%2?32:0);
+                var my = y*16;
+                if (y%2 == 1 && x == this.mapW-1) break;
+                this.map[y][x] = tactics.MapChip()
+                    .addChildTo(this)
+                    .setPosition(mx+32, my+16);
+            }
+        }
+    },
+
     //砦の追加
     enterFrot: function(x, y, alignment, HP, power, type) {
     },
@@ -79,12 +98,51 @@ tm.define("tactics.World", {
             .setPosition(from.x-this.x, from.y-this.y);
     },
 
+    //スクリーン座標からマップ座標へ変換
     screenToMap: function(x, y){
-        return this.map.screenToMap(x-this.x, y-this.y);
+        x = x-this.x;
+        y = y-this.y;
+
+        var w = 64, h = 32;
+        var mx = Math.floor(x/w);
+        var my = Math.floor(y/h)*2;
+
+        //象限の判定
+        var qx = Math.floor(x-mx*w);
+        var qy = Math.floor(y-my*h/2);
+
+        //第一象限（右上）
+        if (qx > 32 && qy < 16) {
+            var x2 = qx-32, y2 = qy;
+            if (x2/2 > y2) my--;
+        } else
+        //第二象限（左上）
+        if (qx < 32 && qy < 16) {
+            var x2 = qx, y2 = qy;
+            if (16-x2/2 > y2) {mx--; my--;}
+        } else
+        //第三象限（左下）
+        if (qx < 32 && qy > 16) {
+            var x2 = qx, y2 = qy-16;
+            if (x2/2 < y2) {mx--; my++;}
+        } else
+        //第四象限（右下）
+        if (qx > 32 && qy > 16) {
+            var x2 = qx-32, y2 = qy-16;
+            if (16-x2/2 < y2) my++;
+        }
+
+        //クリップ
+        mx = Math.clamp(mx, 0, this.mapW-1);
+        my = Math.clamp(my, 0, this.mapH-1);
+
+    	return {x: mx, y: my};
     },
 
-    //指定座標から一番近い惑星を取得
+    //指定座標から一番近い砦を取得
     getFort: function(x, y){
+        x = x-this.x;
+        y = y-this.y;
         var bd = 99999999;
         var pl = null;
         for (var i = 0; i < this.forts.length; i++) {
@@ -119,6 +177,8 @@ tm.define("tactics.World", {
     //指定座標から一番近い部隊を取得
     getUnit: function(x, y) {
         if (this.units.length == 0)return null;
+        x = x-this.x;
+        y = y-this.y;
         var bd = 99999999;
         var unit = null;
         for (var i = 0; i < this.units.length; i++) {
