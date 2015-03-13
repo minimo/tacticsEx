@@ -37,7 +37,7 @@ MEDIA_LLA = 2;      //LawLatencyAudioPlugin
 MEDIA_DEFAULT = MEDIA_ASSET;
 
 //フレームレート
-fps = 60;
+fps = 30;
 var sec = function(s) { return ~~(fps * s);}    //秒からフレーム数へ変換
 
 //表示レイヤー
