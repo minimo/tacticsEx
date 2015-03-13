@@ -4,7 +4,7 @@
  *  @auther minimo  
  *  This Program is MIT license.
  *
- *  配置した砦やユニットの移動、戦闘その他を自動で処理
+ *  マップ管理とユニットの移動、戦闘その他を自動で処理
  *  操作はMainSceneから行う
  *
  */
@@ -25,8 +25,8 @@ tm.define("tactics.World", {
     //スプライトレイヤー
     layers: null,
 
-    //最大惑星数
-    maxPlanets: 20,
+    //最大砦数
+    maxForts: 20,
 
     //砦リスト
     forts: null,
@@ -44,7 +44,7 @@ tm.define("tactics.World", {
     //ハンディキャップ（相手の戦力増加比率係数）
     handicap: 1.0,
 
-    //艦隊派遣時戦力レート(10 - 90)
+    //派遣戦力レート(10 - 90)
     rate: 50,
 
     init: function(scene) {
@@ -61,6 +61,8 @@ tm.define("tactics.World", {
         for (var i = 0; i < LAYER_SYSTEM+1; i++) {
             this.layers[i] = tm.app.Object2D().addChildTo(this.base);
         }
+
+        this.map = tactics.WorldMap().addChildTo(this).setOrigin(0,0);
     },
 
     update: function() {
@@ -70,8 +72,12 @@ tm.define("tactics.World", {
     enterFrot: function(x, y, alignment, HP, power, type) {
     },
 
-    //艦隊投入
+    //ユニット投入
     enterUnit: function(from, to, rate) {
+    },
+
+    screenToMap: function(x, y){
+        return this.map.screenToMap(x-this.x, y-this.y);
     },
 
     //指定座標から一番近い惑星を取得
@@ -151,7 +157,7 @@ tm.define("tactics.World", {
     },
     
     //惑星戦力合計を算出
-    getPowerOfPlanet: function(alignment) {
+    getPowerOfForts: function(alignment) {
         var val = 0;
         for (var i = 0, len = this.forts.length; i < len; i++) {
             var p = this.forts[i];
@@ -181,7 +187,7 @@ tm.define("tactics.World", {
         }
 
         //マップレイヤ
-        if (child instanceof tactics.Planet) {
+        if (child instanceof tactics.WorldMap || child instanceof tactics.Fort) {
             child.world = this;
             this.layers[LAYER_PLANET].addChild(child);
             this.forts[this.forts.length] = child;

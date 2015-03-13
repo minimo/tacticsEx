@@ -51,8 +51,8 @@ tm.define("tactics.MainScene", {
         this.mainLayer = tm.app.Object2D().addChildTo(this);
         this.upperLayer = tm.app.Object2D().addChildTo(this);
 
-        this.world = tactics.WorldMap()
-            .addChildTo(this.lowerLayer)
+        this.world = tactics.World()
+            .addChildTo(this.mainLayer)
             .setPosition(32, 16);
 
         this.test = tm.display.Label("x:0 y:0")

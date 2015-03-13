@@ -11,7 +11,6 @@ tm.define("tactics.MapChip", {
 
     init: function() {
         this.superInit("mapchip", 32, 16);
-        this.setFrameTrimming(16, 16);
         this.setFrameIndex(0);
         this.setScale(2);
     },
@@ -45,6 +44,10 @@ tm.define("tactics.WorldMap", {
     update: function() {
     },
 
+    //マップの生成
+    buildMap: function() {
+    },
+
     //マップの基部作成
     setupBaseMap: function() {
         for(var y = 0; y < this.mapH; y++) {
@@ -62,9 +65,6 @@ tm.define("tactics.WorldMap", {
 
     //スクリーン座標からマップ座標へ変換
     screenToMap: function(x, y) {
-        x -= this.x;
-        y -= this.y;
-
         var w = 64, h = 32;
         var mx = Math.floor(x/w);
         var my = Math.floor(y/h)*2;
