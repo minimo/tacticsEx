@@ -42,12 +42,12 @@ tactics.createSpriteSheet = function() {
             },
             "attack_down": {
                 frames:[12,13,14,15],
-                next: "stop_down",
+                next: "attack_down",
                 frequency: 5,
             },
             "attack_up": {
                 frames:[16,17,18,19],
-                next: "stop_up",
+                next: "attack_up",
                 frequency: 5,
             },
         },
@@ -90,6 +90,38 @@ tactics.createSpriteSheet = function() {
             "attack_up": {
                 frames:[16,17,18,19],
                 next: "stop_up",
+                frequency: 5,
+            },
+        },
+    });
+
+    //村人ユニット
+    tactics.SpriteSheet.Normal = tm.asset.SpriteSheet({
+        image: "normal",
+        frame: {
+            width: 32,
+            height: 32,
+            count: 32,
+        },
+        animations: {
+            "stop_down": {
+                frames:[5],
+                next: "stop_down",
+                frequency: 60,
+            },
+            "stop_up": {
+                frames:[4],
+                next: "stop_up",
+                frequency: 60,
+            },
+            "walk_down": {
+                frames:[1,5,9],
+                next: "walk_down",
+                frequency: 5,
+            },
+            "walk_up": {
+                frames:[0,4,8],
+                next: "walk_up",
                 frequency: 5,
             },
         },

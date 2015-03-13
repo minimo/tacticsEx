@@ -31,6 +31,8 @@ tm.define("tactics.Unit", {
     vx: 0,
     vy: 0,
     speed: 1,
+    bx: 0,
+    by: 0,
 
     //所属ワールド
     world: null,
@@ -44,13 +46,6 @@ tm.define("tactics.Unit", {
     //マウスオーバーフラグ
     mouseover: false,
 
-    //デフォルトパラメータ
-    defaultParam: {
-        alignment: 0,
-        HP: 1,
-        power: 1
-    },
-
     init: function(alignment, HP, power) {
         this.superInit();
         this.alignment = alignment || 0;
@@ -59,15 +54,26 @@ tm.define("tactics.Unit", {
 
         var ss = null;
         switch(alignment) {
+            case 0:
+                ss = tactics.SpriteSheet.Normal;
+                break;
             case 1:
                 ss = tactics.SpriteSheet.Knight;
+                break;
+            case 2:
+                ss = tactics.SpriteSheet.Monster;
+                break;
         }
-        this.sprite = tm.display.AnimationSprite(tactics.SpriteSheet.Knight);
-
+        this.sprite = tm.display.AnimationSprite(tactics.SpriteSheet.Knight)
+            .addChildTo(this)
+            .gotoAndPlay("stop_down");
+    
         this.time = 0;
     },
 
     update: function() {
+        this.bx = this.x;
+        this.by = this.y;
         this.time++;
     },
 

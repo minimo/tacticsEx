@@ -74,6 +74,9 @@ tm.define("tactics.World", {
 
     //ユニット投入
     enterUnit: function(from, to, rate) {
+        var unit = tactics.Unit()
+            .addChildTo(this)
+            .setPosition(from.x-this.x, from.y-this.y);
     },
 
     screenToMap: function(x, y){
