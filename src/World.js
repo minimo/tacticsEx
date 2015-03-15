@@ -51,9 +51,16 @@ tm.define("tactics.World", {
     //派遣戦力レート(10 - 90)
     rate: 50,
 
-    init: function(scene) {
+    //自動生成用乱数発生器  
+    mt: null,
+    rand: function(min, max) { return this.mt.nextInt(min, max); },
+
+    init: function(scene, seed) {
         this.superInit();
         this.scene = scene;
+
+        this.seed = seed || 0;
+
         this.forts = [];
         this.units = [];
 
@@ -65,8 +72,6 @@ tm.define("tactics.World", {
         for (var i = 0; i < LAYER_SYSTEM+1; i++) {
             this.layers[i] = tm.app.Object2D().addChildTo(this.base);
         }
-
-//        this.map = tactics.WorldMap().addChildTo(this).setOrigin(0,0);
     },
 
     update: function() {
@@ -85,6 +90,11 @@ tm.define("tactics.World", {
                     .setPosition(mx+32, my+16);
             }
         }
+    },
+
+    //マップの自動生成
+    buildMap: function() {
+        this.mt = MersenneTwister(this.seed);
     },
 
     //砦の追加
