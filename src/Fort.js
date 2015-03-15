@@ -40,15 +40,9 @@ tm.define("tactics.Fort", {
     //所属ワールド
     world: null,
 
-    init: function(x, y, alignment, HP, power, type) {
+    init: function(alignment, HP, power, type) {
         this.alignment = alignment || 0;
-        if (this.alignment == TYPE_NEUTRAL) {
-            this.superInit("planet_mono", 64, 64);
-        } else {
-            this.superInit("planet", 64, 64);
-        }
-        this.x = x || 0;
-        this.y = y || 0;
+        this.superInit("mapobject", 32, 32);
         this.HP = HP || 100;
         this.power = power || 1;
         this.type = type || 0;
