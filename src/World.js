@@ -63,7 +63,6 @@ tm.define("tactics.World", {
 
         this.forts = [];
         this.units = [];
-
 /*
         this.base = tm.display.Sprite("mapbase").setOrigin(0, 0).setPosition(32, 16);
         this.superClass.prototype.addChild.call(this, this.base);
@@ -125,13 +124,17 @@ tm.define("tactics.World", {
     },
 
     //マップの自動生成
-    buildMap: function() {
-//        this.mt = MersenneTwister(this.seed);
+    buildMap: function(seed) {
+        this.seed = seed || 0;
+        this.mt = new MersenneTwister(this.seed);
 
+        this.enterFort( 1,  2, TYPE_PLAYER, 100, 1, 1);
+        this.enterFort(15, 30, TYPE_ENEMY , 100, 1, 1);
         for (var i = 0; i < 10; i++) {
-            var x = rand(0, this.mapW-1);
-            var y = rand(0, this.mapH-1);
-            this.enterFort(x, y);
+            var x = this.rand(0, this.mapW-1);
+            var y = this.rand(0, this.mapH-1);
+            var hp = this.rand(70, 200)
+            this.enterFort(x, y, TYPE_NEUTRAL, hp, 1, 0);
         }
     },
 
@@ -206,8 +209,8 @@ tm.define("tactics.World", {
 
     //指定座標から一番近い砦を取得
     getFort: function(x, y){
-        x = x-this.x;
-        y = y-this.y;
+        x = x-this.base.x;
+        y = y-this.base.y;
         var bd = 99999999;
         var pl = null;
         for (var i = 0; i < this.forts.length; i++) {
@@ -306,22 +309,6 @@ tm.define("tactics.World", {
 
     //addChildオーバーライド
     addChild: function(child) {
-        //ユニットレイヤ
-        if (child instanceof tactics.Unit) {
-            child.world = this;
-            this.layers[LAYER_UNIT].addChild(child);
-            this.units[this.units.length] = child;
-            return this;
-        }
-
-        //マップレイヤ
-        if (child instanceof tactics.Fort) {
-            child.world = this;
-            this.layers[LAYER_MAP].addChild(child);
-            this.forts[this.forts.length] = child;
-            return this;
-        }
-
         //エフェクトレイヤ
         if (child.isEffect) {
             if (!child.isLower) {
@@ -342,6 +329,22 @@ tm.define("tactics.World", {
         //システム表示レイヤ
         if (child.isSystem) {
             this.layers[LAYER_SYSTEM].addChild(child);
+            return this;
+        }
+
+        //ユニットレイヤ
+        if (child instanceof tactics.Unit) {
+            child.world = this;
+            this.layers[LAYER_UNIT].addChild(child);
+            this.units[this.units.length] = child;
+            return this;
+        }
+
+        //マップレイヤ
+        if (child instanceof tactics.Fort) {
+            child.world = this;
+            this.layers[LAYER_MAP].addChild(child);
+            this.forts[this.forts.length] = child;
             return this;
         }
 

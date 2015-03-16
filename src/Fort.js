@@ -31,11 +31,8 @@ tm.define("tactics.Fort", {
     //選択中フラグ
     select: false,
 
-    //マウスオーバーフラグ
-    mouseover: false,
-
     //経過フレーム数
-    frame: 0,
+    time: 0,
 
     //所属ワールド
     world: null,
@@ -55,6 +52,8 @@ tm.define("tactics.Fort", {
         this.HP = HP || 100;
         this.power = power || 1;
         this.type = type || 0;
+
+        if (type == 1) this.setFrameIndex(6);
 
         var that = this;
         //選択カーソル
@@ -111,11 +110,11 @@ tm.define("tactics.Fort", {
             if (this.alpha == TYPE_ENEMY) {
                 rev = this.world.handicap;
             }
-            if (this.frame % this.intervalHP == 0){
+            if (this.time % this.intervalHP == 0){
                 this.HP += this.power * rev * 0.5;
             }
         }
-        this.frame++;
+        this.time++;
     },
 
     //攻撃を受ける
