@@ -41,12 +41,14 @@ fps = 30;
 var sec = function(s) { return ~~(fps * s);}    //秒からフレーム数へ変換
 
 //表示レイヤー
-LAYER_SYSTEM = 6;           //システム表示
-LAYER_FOREGROUND = 5;       //フォアグラウンド
-LAYER_EFFECT_UPPER = 4;     //エフェクト上位
-LAYER_UNIT = 3;             //ユニット
+LAYER_SYSTEM = 8;           //システム表示
+LAYER_FOREGROUND = 7;       //フォアグラウンド
+LAYER_EFFECT_UPPER = 6;     //エフェクト上位
+LAYER_MAPOBJ_UPPER = 5;     //マップオブジェクト上位
+LAYER_UNIT = 4;             //ユニット
+LAYER_MAPOBJ_LOWEE = 3;     //マップオブジェクト下位
 LAYER_EFFECT_LOWER = 2;     //エフェクト下位
-LAYER_PLANET = 1;           //惑星
+LAYER_MAP = 1;              //マップ
 LAYER_BACKGROUND = 0;       //バックグラウンド
 
 //インスタンス

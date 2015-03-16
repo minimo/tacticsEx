@@ -64,8 +64,13 @@ tm.define("tactics.World", {
         this.forts = [];
         this.units = [];
 
-        this.base = tm.display.Sprite("mapbase").setOrigin(0, 0);
+/*
+        this.base = tm.display.Sprite("mapbase").setOrigin(0, 0).setPosition(32, 16);
         this.superClass.prototype.addChild.call(this, this.base);
+*/
+        this.base = tm.display.CanvasElement().setOrigin(0, 0).setPosition(32, 16);
+        this.superClass.prototype.addChild.call(this, this.base);
+        this.setupMapBase();
 
         //表示レイヤー構築（数字が大きい程優先度が高い）
         this.layers = [];
@@ -76,9 +81,32 @@ tm.define("tactics.World", {
 
     update: function() {
     },
+
+    pointingStart: function(e) {
+        var mp = this.screenToMap(e.pointing.x, e.pointing.y);
+        var x = mp.x*64+(mp.y%2?32:0)+32;
+        var y = mp.y*16;
+
+        this.pointer = tm.display.Sprite("mapobject", 32, 32)
+            .addChildTo(this.base)
+            .setFrameIndex(4)
+            .setScale(2, 2)
+            .setPosition(x, y);
+    },
+    pointingMove: function(e) {
+        var mp = this.screenToMap(e.pointing.x, e.pointing.y);
+        var x = mp.x*64+(mp.y%2?32:0)+32;
+        var y = mp.y*16;
+        this.pointer.setPosition(x, y);
+    },
+    pointingEnd: function(e) {
+        this.pointer.remove();
+        this.pointer = null;
+    },
     
     //マップの基部作成
-    setupBaseMap: function() {
+    setupMapBase: function() {
+        this.map = [];
         for(var y = 0; y < this.mapH; y++) {
             this.map[y] = [];
             for(var x = 0; x < this.mapW; x++) {
@@ -86,7 +114,7 @@ tm.define("tactics.World", {
                 var my = y*16;
                 if (y%2 == 1 && x == this.mapW-1) break;
                 this.map[y][x] = tactics.MapChip()
-                    .addChildTo(this)
+                    .addChildTo(this.base)
                     .setPosition(mx+32, my+16);
             }
         }
@@ -110,8 +138,9 @@ tm.define("tactics.World", {
 
     //スクリーン座標からマップ座標へ変換
     screenToMap: function(x, y){
-        x = x-this.x;
-        y = y-this.y;
+        //マップ座標のオフセットを反映
+        x -= this.base.x;
+        y -= this.base.y;
 
         var w = 64, h = 32;
         var mx = Math.floor(x/w);
@@ -256,42 +285,42 @@ tm.define("tactics.World", {
             child.world = this;
             this.layers[LAYER_UNIT].addChild(child);
             this.units[this.units.length] = child;
-            return;
+            return this;
         }
 
         //マップレイヤ
-        if (child instanceof tactics.WorldMap || child instanceof tactics.Fort) {
+        if (child instanceof tactics.Fort) {
             child.world = this;
-            this.layers[LAYER_PLANET].addChild(child);
+            this.layers[LAYER_MAP].addChild(child);
             this.forts[this.forts.length] = child;
-            return;
+            return this;
         }
 
         //エフェクトレイヤ
         if (child.isEffect) {
             if (!child.isLower) {
                 this.layers[LAYER_EFFECT_UPPER].addChild(child);
-                return;
+                return this;
             } else {
                 this.layers[LAYER_EFFECT_LOWER].addChild(child);
-                return;
+                return this;
             }
         }
 
         //フォアグラウンドレイヤ
         if (child.isForeground) {
             this.layers[LAYER_FOREGROUND].addChild(child);
-            return;
+            return this;
         }
 
         //システム表示レイヤ
         if (child.isSystem) {
             this.layers[LAYER_SYSTEM].addChild(child);
-            return;
+            return this;
         }
 
         //どれにも該当しない場合はバックグラウンドへ追加
         this.layers[LAYER_BACKGROUND].addChild(child);
-//        this.superClass.prototype.addChild.apply(this, arguments);
+        return this;
     },
 });

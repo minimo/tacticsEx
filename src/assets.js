@@ -5,7 +5,9 @@
  *  This Program is MIT license.
  */
 
-var assets = {
+tactics.assets = tactics.assets || [];
+
+tactics.assets["main"] = {
     //Font
     "UbuntuMono":   "font/UbuntuMono-Bold.ttf",
     "Orbitron":     "font/Orbitron-Regular.ttf",
@@ -15,6 +17,7 @@ var assets = {
     //images
     "mapbase":      "assets/mapbase.png",
     "mapchip":      "assets/mapchip.png",
+    "mapobject":    "assets/mapobject.png",
     "fort":         "assets/fort.png",
     "knight":       "assets/knight.png",
     "monster":      "assets/monster.png",

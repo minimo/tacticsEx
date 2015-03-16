@@ -41,7 +41,7 @@ tm.define("tactics.MainScene", {
         //バックグラウンド
         this.bg = tm.display.RectangleShape({width: SC_W, height: SC_H, fillStyle: appMain.bgColor, strokeStyle: appMain.bgColor})
             .addChildTo(this)
-            .setPosition(SC_W*0.5, SC_H*0.5)
+            .setPosition(SC_W*0.5, SC_H*0.5);
 
         //マルチタッチ初期化
         this.touches = tm.input.TouchesEx(this);
@@ -52,12 +52,11 @@ tm.define("tactics.MainScene", {
         this.upperLayer = tm.app.Object2D().addChildTo(this);
 
         this.world = tactics.World()
-            .addChildTo(this.mainLayer)
-            .setPosition(32, 16);
+            .addChildTo(this.mainLayer);
 
         this.test = tm.display.Label("x:0 y:0")
             .addChildTo(this)
-            .setPosition(32, 32)
+            .setPosition(32, SC_H-60)
             .setParam({fontFamily:"Orbitron", align: "left", baseline:"middle", outlineWidth:2 });
 
         //目隠し
@@ -89,6 +88,8 @@ tm.define("tactics.MainScene", {
         this.moveX = 0;
         this.moveY = 0;
 
+        this.world.pointingStart(e);
+
         this.beforeX = sx;
         this.beforeY = sy;
         this.touchTime = 0;
@@ -100,6 +101,7 @@ tm.define("tactics.MainScene", {
 
         var mp = this.world.screenToMap(e.pointing.x, e.pointing.y);
         this.test.text = "x:"+mp.x+" y:"+mp.y;
+        this.world.pointingMove(e);
 
         var sx = e.pointing.x;
         var sy = e.pointing.y;
@@ -111,6 +113,8 @@ tm.define("tactics.MainScene", {
     ontouchesend: function(e) {
         if (this.touchID != e.ID) return;
         this.touchID = -1;
+
+        this.world.pointingEnd(e);
 
         var sx = e.pointing.x;
         var sy = e.pointing.y;
