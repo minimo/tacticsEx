@@ -12,17 +12,6 @@ tm.define("tactics.LoadingScene", {
     init: function(param) {
         this.superInit();
 
-        var param = {
-            assets: assets,
-            width: SC_W,
-            height: SC_H,
-            bgColor: 'rgba(0, 0, 0, 1)',
-            nextScene: function() {
-                this._onLoadAssets();
-                return tactics.TitleScene();
-            }.bind(this),
-        };
-
         this.fromJSON({
             children: {
                 stage: {
@@ -158,19 +147,5 @@ tm.define("tactics.LoadingScene", {
                 loader.load(param.assets);
             }
         }.bind(this));
-    },
-    _onLoadAssets: function() {
-        //スプライトシート作成
-        tactics.createSpriteSheet();
-/*
-        appMain.sounds.add("titleBGM");
-*/
-        //Admob setting
-        if (ENABLE_PHONEGAP && AdMob) {
-            AdMob.createBanner({
-                adId:admobid.banner,
-                position: AdMob.AD_POSITION.BOTTOM_CENTER
-            });
-        }
     },
 });

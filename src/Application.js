@@ -57,8 +57,32 @@ tm.define("tactics.CanvasApp", {
         this.loadConfig();
 
         //アセット読み込み
-        var loadingScene = tactics.LoadingScene();
+        var loadingScene = tactics.LoadingScene({
+            assets: tactics.assets["main"],
+            width: SC_W,
+            height: SC_H,
+            bgColor: 'rgba(0, 0, 0, 1)',
+            nextScene: function() {
+                this._onLoadAssets();
+                return tactics.TitleScene();
+            }.bind(this)
+        });
         this.replaceScene(loadingScene);
+    },
+
+    _onLoadAssets: function() {
+        //スプライトシート作成
+        tactics.createSpriteSheet();
+/*
+        appMain.sounds.add("titleBGM");
+*/
+        //Admob setting
+        if (ENABLE_PHONEGAP && AdMob) {
+            AdMob.createBanner({
+                adId:admobid.banner,
+                position: AdMob.AD_POSITION.BOTTOM_CENTER
+            });
+        }
     },
 
     exitApp: function() {
