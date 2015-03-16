@@ -51,6 +51,11 @@ LAYER_EFFECT_LOWER = 2;     //エフェクト下位
 LAYER_MAP = 1;              //マップ
 LAYER_BACKGROUND = 0;       //バックグラウンド
 
+//ユニット、砦タイプ
+TYPE_NEUTRAL = 0;
+TYPE_PLAYER = 1;
+TYPE_ENEMY = 2;
+
 //インスタンス
 appMain = {};
 

@@ -77,6 +77,10 @@ tm.define("tactics.World", {
         for (var i = 0; i < LAYER_SYSTEM+1; i++) {
             this.layers[i] = tm.app.Object2D().addChildTo(this.base);
         }
+
+        //マップ構築
+        this.buildMap();
+
     },
 
     update: function() {
@@ -122,11 +126,32 @@ tm.define("tactics.World", {
 
     //マップの自動生成
     buildMap: function() {
-        this.mt = MersenneTwister(this.seed);
+//        this.mt = MersenneTwister(this.seed);
+
+        for (var i = 0; i < 10; i++) {
+            var x = rand(0, this.mapW-1);
+            var y = rand(0, this.mapH-1);
+            this.enterFort(x, y);
+        }
     },
 
     //砦の追加
-    enterFrot: function(x, y, alignment, HP, power, type) {
+    enterFort: function(x, y, alignment, HP, power, type) {
+        var mx = x*64+(y%2?32:0)+32;
+        var my = y*16;
+        var f = tactics.Fort(alignment, HP, power, type)
+            .addChildTo(this)
+            .setPosition(mx, my);
+        f.mapX = x;
+        f.mapY = y;
+
+        //ＩＤ登録
+        f.ID = this.fortID;
+        this.fortID++;
+
+        //管理用配列に入れる
+        this.forts.push(f);
+        return f;
     },
 
     //ユニット投入
@@ -142,6 +167,7 @@ tm.define("tactics.World", {
         x -= this.base.x;
         y -= this.base.y;
 
+        //マップ座標へ仮変換
         var w = 64, h = 32;
         var mx = Math.floor(x/w);
         var my = Math.floor(y/h)*2;
@@ -171,7 +197,7 @@ tm.define("tactics.World", {
             if (16-x2/2 < y2) my++;
         }
 
-        //クリップ
+        //範囲内にクリッピング
         mx = Math.clamp(mx, 0, this.mapW-1);
         my = Math.clamp(my, 0, this.mapH-1);
 

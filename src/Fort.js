@@ -23,7 +23,7 @@ tm.define("tactics.Fort", {
     HP: 0,
 
     //戦力上昇フレーム間隔
-    intervalHP: 30,
+    intervalHP: 15,
 
     //属性（0:中立 1:プレイヤー 2:エネミー）
     alignment: 0,
@@ -40,17 +40,21 @@ tm.define("tactics.Fort", {
     //所属ワールド
     world: null,
 
+    //マップ上座標
+    mapX: 0,
+    mapY: 0,
+
+    labelParam: {fontFamily:"Orbitron",align:"center", baseline:"middle", fontSize:10, outlineWidth:1},
+
     init: function(alignment, HP, power, type) {
-        this.alignment = alignment || 0;
         this.superInit("mapobject", 32, 32);
+        this.setFrameIndex(5);
+        this.setScale(2);
+
+        this.alignment = alignment || 0;
         this.HP = HP || 100;
         this.power = power || 1;
         this.type = type || 0;
-
-        this.intervalHP /= SPD;
-
-        this.setFrameIndex(this.type, 64, 64);
-        this.setScale(this.power);
 
         var that = this;
         //選択カーソル
@@ -72,23 +76,19 @@ tm.define("tactics.Fort", {
         this.cursor.update = function() {
             if (that.select) {
                 this.rotation++;
-                this.alpha+=0.05*SPD;
+                this.alpha+=0.05;
                 if (this.alpha > 1.0)this.alpha = 1.0;
             } else {
-                this.alpha-=0.05*SPD;
+                this.alpha-=0.05;
                 if (this.alpha < 0.0)this.alpha = 0.0;
             }
         };
 
         //HP表示
-        this.label = tm.display.OutlineLabel("", 30).addChildTo(this);
-        this.label.fontFamily = "'Orbitron'";
-        this.label.align     = "center";
-        this.label.baseline  = "middle";
-        this.label.fontSize = 20;
-        this.label.fontWeight = 700;
-        this.label.outlineWidth = 2;
-        this.label.setScale(1/this.power);
+        this.label = tm.display.OutlineLabel("", 20)
+            .addChildTo(this)
+            .setParam(this.labelParam)
+            .setPosition(0, -8);
         this.label.update = function() {
             this.text = "" + ~~that.HP;
             switch (that.alignment) {
@@ -101,13 +101,6 @@ tm.define("tactics.Fort", {
                 case TYPE_ENEMY:
                     this.fillStyle = "rgba(255, 64, 64, 1.0)";
                     break;
-            }
-            if (that.select || that.mouseover) {
-                this.fontSize+=5*SPD;
-                if (this.fontSize > 50)this.fontSize = 50;
-            } else {
-                this.fontSize-=5*SPD;
-                if (this.fontSize < 25)this.fontSize = 25;
             }
         };
     },
