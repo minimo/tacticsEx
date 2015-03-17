@@ -88,42 +88,70 @@ tm.define("tactics.MainScene", {
     ontouchesstart: function(e) {
         if (this.touchID > 0)return;
         this.touchID = e.ID;
-
         var sx = this.startX = e.pointing.x;
         var sy = this.startY = e.pointing.y;
         this.moveX = 0;
         this.moveY = 0;
-
-        this.world.pointingStart(e);
-
         this.beforeX = sx;
         this.beforeY = sy;
         this.touchTime = 0;
+
+        //砦の判定
+        var res = this.world.getFort(sx, sy);
+        if (res && res.distance < 32) {
+            res.fort.select = true;
+            return;
+        }
+
+        var mp = this.world.screenToMap(sx, sy);
+        var x = mp.x*64+(mp.y%2?32:0)+32;
+        var y = mp.y*16;
+
+        this.pointer = tm.display.Sprite("mapobject", 32, 32)
+            .addChildTo(this.world.base)
+            .setFrameIndex(4)
+            .setScale(2, 2)
+            .setPosition(x, y);
     },
 
     //タッチorクリック移動処理
     ontouchesmove: function(e) {
         if (this.touchID != e.ID) return;
-
-        var mp = this.world.screenToMap(e.pointing.x, e.pointing.y);
-        this.test.text = "x:"+mp.x+" y:"+mp.y;
-        this.world.pointingMove(e);
-
         var sx = e.pointing.x;
         var sy = e.pointing.y;
         var moveX = Math.abs(sx - this.beforeX);
         var moveY = Math.abs(sx - this.beforeY);
+
+        var mp = this.world.screenToMap(sx, sy);
+        this.test.text = "x:"+mp.x+" y:"+mp.y;
+
+        var mp = this.world.screenToMap(sx, sy);
+        var x = mp.x*64+(mp.y%2?32:0)+32;
+        var y = mp.y*16;
+        if (this.pointer) {
+            this.pointer.setPosition(x, y);
+        } else {
+        }
+
+        this.clickTime++;
     },
 
     //タッチorクリック終了処理
     ontouchesend: function(e) {
         if (this.touchID != e.ID) return;
         this.touchID = -1;
-
-        this.world.pointingEnd(e);
-
         var sx = e.pointing.x;
         var sy = e.pointing.y;
+        var moveX = Math.abs(sx - this.beforeX);
+        var moveY = Math.abs(sx - this.beforeY);
+
+        this.world.selectFortGroup(TYPE_PLAYER, false);
+        this.world.selectFortGroup(TYPE_ENEMY, false);
+        this.world.selectFortGroup(TYPE_NEUTRAL, false);
+        if (this.pointer) {
+            this.pointer.remove();
+            this.pointer = null;
+        }
     },
 });
 

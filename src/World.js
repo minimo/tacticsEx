@@ -55,6 +55,12 @@ tm.define("tactics.World", {
     mt: null,
     rand: function(min, max) { return this.mt.nextInt(min, max); },
 
+    //処理中フラグ
+    busy: false,
+
+    //長押しフラグ
+    longPress: false,
+
     init: function(scene, seed) {
         this.superInit();
         this.scene = scene;
@@ -79,34 +85,12 @@ tm.define("tactics.World", {
 
         //マップ構築
         this.buildMap();
-
     },
 
     update: function() {
+        if (this.busy) return;
     },
 
-    pointingStart: function(e) {
-        var mp = this.screenToMap(e.pointing.x, e.pointing.y);
-        var x = mp.x*64+(mp.y%2?32:0)+32;
-        var y = mp.y*16;
-
-        this.pointer = tm.display.Sprite("mapobject", 32, 32)
-            .addChildTo(this.base)
-            .setFrameIndex(4)
-            .setScale(2, 2)
-            .setPosition(x, y);
-    },
-    pointingMove: function(e) {
-        var mp = this.screenToMap(e.pointing.x, e.pointing.y);
-        var x = mp.x*64+(mp.y%2?32:0)+32;
-        var y = mp.y*16;
-        this.pointer.setPosition(x, y);
-    },
-    pointingEnd: function(e) {
-        this.pointer.remove();
-        this.pointer = null;
-    },
-    
     //マップの基部作成
     setupMapBase: function() {
         this.map = [];
@@ -207,23 +191,41 @@ tm.define("tactics.World", {
     	return {x: mx, y: my};
     },
 
-    //指定座標から一番近い砦を取得
+    //指定スクリーン座標上のマップ表示物を取得
+    getMapPoint: function(x, y) {
+        //砦を選択しているか判定
+        var res = this.getFort(px, py);
+        if (res && res.distance < 32) return res.fort;
+
+        //ユニットを選択しているか判定
+        var res = this.getUnit(px, py);
+        if (res && res.distance < 16) return res.unit;
+
+        //マップ地点を取得
+        var mp = this.screenToMap(px, py);
+        var x = mp.x*64+(mp.y%2?32:0)+32;
+        var y = mp.y*16;
+        return {x:x, y:y, mapX:mp.x, mapY:mp.y};
+    },
+
+    //指定スクリーン座標から一番近い砦を取得
     getFort: function(x, y){
+        if (this.forts.length == 0) return null;
         x = x-this.base.x;
         y = y-this.base.y;
         var bd = 99999999;
-        var pl = null;
+        var f = null;
         for (var i = 0; i < this.forts.length; i++) {
             var p = this.forts[i];
             var dx = p.x-x;
             var dy = p.y-y;
             var dis = dx*dx+dy*dy;
             if (dis < bd){
-                pl = p;
+                f = p;
                 bd = dis;
             }
         }
-        return {fort: pl, distance: Math.sqrt(bd)};
+        return {fort: f, distance: Math.sqrt(bd)};
     },
 
     //特定陣営の砦を配列で取得
@@ -242,7 +244,7 @@ tm.define("tactics.World", {
         }
     },
 
-    //指定座標から一番近い部隊を取得
+    //指定スクリーン座標から一番近い部隊を取得
     getUnit: function(x, y) {
         if (this.units.length == 0)return null;
         x = x-this.x;
