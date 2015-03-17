@@ -6,7 +6,7 @@
  */
  
 //選択矢印
-tm.define("tatics.Arrow", {
+tm.define("tactics.Arrow", {
     superClass: tm.display.Sprite,
 
     //始点と終点
@@ -26,8 +26,8 @@ tm.define("tatics.Arrow", {
 
         this.originX = 0;
         this.originY = 0.5;
-        this.from = from;
-        this.to = to;
+        this.from = from || null;
+        this.to = to || null;
         this.alpha = 0.0;
     },
 

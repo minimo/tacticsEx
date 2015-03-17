@@ -72,6 +72,7 @@ tm.define("tactics.Unit", {
     },
 
     update: function() {
+        if (this.world.busy) return;
         this.bx = this.x;
         this.by = this.y;
         this.time++;

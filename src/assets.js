@@ -15,6 +15,7 @@ tactics.assets["main"] = {
     //BGM
 
     //images
+    "arrow":        "assets/arrow.png",
     "mapbase":      "assets/mapbase.png",
     "mapchip":      "assets/mapchip.png",
     "mapobject":    "assets/mapobject.png",

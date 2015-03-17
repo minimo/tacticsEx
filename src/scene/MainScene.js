@@ -22,6 +22,9 @@ tm.define("tactics.MainScene", {
     beforeX: 0,
     beforeY: 0,
 
+    //コントロール中フラグ
+    control: CTRL_NOTHING,
+
     //経過時間
     time: 1,
 
@@ -30,6 +33,9 @@ tm.define("tactics.MainScene", {
 
     //マップ情報
     world: null,
+
+    //選択矢印
+    arrow: null,
 
     //ラベル用パラメータ
     labelParam: {fontFamily: "Orbitron", align: "left", baseline: "middle",outlineWidth: 3, fontWeight:700},
@@ -96,10 +102,14 @@ tm.define("tactics.MainScene", {
         this.beforeY = sy;
         this.touchTime = 0;
 
+//        this.arrow = tactics.Arrow().addChildTo(this);
+
         //砦の判定
         var res = this.world.getFort(sx, sy);
         if (res && res.distance < 32) {
             res.fort.select = true;
+            this.control = CTRL_FORT;
+            this.arrow = tactics.Arrow(res.fort).addChildTo(this);
             return;
         }
 
@@ -132,8 +142,10 @@ tm.define("tactics.MainScene", {
             this.pointer.setPosition(x, y);
         } else {
         }
-
-        this.clickTime++;
+        if (this.arrow) {
+            this.arrow.to = {x:sx, y:sy, active:true};
+        }
+        this.touchTime++;
     },
 
     //タッチorクリック終了処理
@@ -151,6 +163,10 @@ tm.define("tactics.MainScene", {
         if (this.pointer) {
             this.pointer.remove();
             this.pointer = null;
+        }
+        if (this.arrow) {
+            this.arrow.remove();
+            this.arrow = null;
         }
     },
 });

@@ -30,6 +30,7 @@ tm.define("tactics.Fort", {
 
     //選択中フラグ
     select: false,
+    active: true,
 
     //経過フレーム数
     time: 0,
@@ -115,6 +116,7 @@ tm.define("tactics.Fort", {
     },
 
     update: function() {
+        if (this.world.busy) return;
         if (this.alignment != TYPE_NEUTRAL) {
             var rev = 1;
             if (this.alpha == TYPE_ENEMY) {
