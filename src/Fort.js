@@ -62,25 +62,35 @@ tm.define("tactics.Fort", {
             height: 32,
             fillStyle: "rgba(0,0,0,0)",
             strokeStyle: tm.graphics.LinearGradient(0,0,0,32).addColorStopList([
-                { offset:0.0, color:"rgba(0,255,0,0.0)" },
-                { offset:0.3, color:"rgba(0,255,0,0.8)" },
-                { offset:0.5, color:"rgba(0,255,0,1.0)" },
-                { offset:0.7, color:"rgba(0,255,0,0.8)" },
-                { offset:1.0, color:"rgba(0,255,0,0.0)" },
+                { offset:0.0, color:"rgba(0,0,255,0.0)" },
+                { offset:0.2, color:"rgba(0,0,255,0.8)" },
+                { offset:0.5, color:"rgba(0,0,255,1.0)" },
+                { offset:0.8, color:"rgba(0,0,255,0.8)" },
+                { offset:1.0, color:"rgba(0,0,255,0.0)" },
             ]).toStyle(),
             lineWidth: 3.0,
         }).addChildTo(this);
-        this.cursor.blendMode = "lighter";
+        this.cursor.blendMode = "source-over";
         this.cursor.alpha = 0;
+        this.cursor.setScale(0);
+        this.cursor.beforeSelect = false;
         this.cursor.update = function() {
             if (that.select) {
-                this.rotation++;
+                this.rotation+=2;
                 this.alpha+=0.15;
                 if (this.alpha > 1.0)this.alpha = 1.0;
             } else {
                 this.alpha-=0.15;
                 if (this.alpha < 0.0)this.alpha = 0.0;
             }
+            if (this.beforeSelect != that.select) {
+                if (that.select) {
+                    this.tweener.clear().to({scaleX:1, scaleY:1}, 200, "easeOutSine");
+                } else {
+                    this.tweener.clear().to({scaleX:0, scaleY:0}, 200, "easeOutSine");
+                }
+            }
+            this.beforeSelect = that.select;
         };
 
         //HP表示
@@ -142,21 +152,21 @@ tm.define("tactics.Fort", {
 
     //選択カーソル色変更
     changeCursolColor: function(color) {
-        if (color == "green") {
+        if (color == "blue") {
             this.cursor.strokeStyle = tm.graphics.LinearGradient(0,0,0,80).addColorStopList([
-                { offset:0.0, color:"rgba(0,255,0,0.0)" },
-                { offset:0.3, color:"rgba(0,255,0,0.8)" },
-                { offset:0.5, color:"rgba(0,255,0,1.0)" },
-                { offset:0.7, color:"rgba(0,255,0,0.8)" },
-                { offset:1.0, color:"rgba(0,255,0,0.0)" },
+                { offset:0.0, color:"rgba(0,0,255,0.0)" },
+                { offset:0.2, color:"rgba(0,0,255,0.8)" },
+                { offset:0.5, color:"rgba(0,0,255,1.0)" },
+                { offset:0.8, color:"rgba(0,0,255,0.8)" },
+                { offset:1.0, color:"rgba(0,0,255,0.0)" },
             ]).toStyle();
         }
         if (color == "red") {
             this.cursor.strokeStyle = tm.graphics.LinearGradient(0,0,0,80).addColorStopList([
                 { offset:0.0, color:"rgba(255,0,0,0.0)" },
-                { offset:0.3, color:"rgba(255,0,0,0.8)" },
+                { offset:0.2, color:"rgba(255,0,0,0.8)" },
                 { offset:0.5, color:"rgba(255,0,0,1.0)" },
-                { offset:0.7, color:"rgba(255,0,0,0.8)" },
+                { offset:0.8, color:"rgba(255,0,0,0.8)" },
                 { offset:1.0, color:"rgba(255,0,0,0.0)" },
            ]).toStyle();
         }
