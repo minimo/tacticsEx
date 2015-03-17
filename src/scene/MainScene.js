@@ -51,8 +51,14 @@ tm.define("tactics.MainScene", {
         this.mainLayer = tm.app.Object2D().addChildTo(this);
         this.upperLayer = tm.app.Object2D().addChildTo(this);
 
+        //マップ
         this.world = tactics.World()
             .addChildTo(this.mainLayer);
+
+        //勢力天秤
+        this.balance = tactics.PowerBalance(this.world)
+            .addChildTo(this.mainLayer)
+            .setPosition(SC_W*0.05, SC_H*0.9);
 
         this.test = tm.display.Label("x:0 y:0")
             .addChildTo(this)

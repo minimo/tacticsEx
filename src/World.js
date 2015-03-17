@@ -298,7 +298,7 @@ tm.define("tactics.World", {
     },
 
     //部隊戦力合計を算出
-    getPowerOfUnit: function(alignment) {
+    getPowerOfUnits: function(alignment) {
         var val = 0;
         for (var i = 0, len = this.units.length; i < len; i++) {
             var p = this.units[i];
