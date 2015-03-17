@@ -1,13 +1,12 @@
 /*
- *  TheStarsMyDestination tmlib.js version
  *  Arrow.js
- *  2014/03/01
+ *  2015/03/17
  *  @auther minimo  
  *  This Program is MIT license.
  */
  
 //選択矢印
-tm.define("tiger.Arrow", {
+tm.define("tatics.Arrow", {
     superClass: tm.display.Sprite,
 
     //始点と終点
@@ -34,13 +33,13 @@ tm.define("tiger.Arrow", {
 
     update: function() {
         //始点または終点が非アクティブな場合は非表示
-        if (this.from instanceof tiger.Unit) {
+        if (this.from instanceof tactics.Unit) {
             if (!this.from.active) {
                 this.visible = false;
                 return;
             }
         }
-        if (this.to instanceof tiger.Unit) {
+        if (this.to instanceof tactics.Unit) {
             if (!this.to.active) {
                 this.visible = false;
                 return;
@@ -65,23 +64,23 @@ tm.define("tiger.Arrow", {
         var tx = this.to.x, ty = this.to.y;
         var dx = tx-fx, dy = ty-fy;
 
-        //始点が惑星の場合円周上にする
-        if (this.from instanceof tiger.Planet) {
-            var len = 38*this.from.power/Math.sqrt(dx*dx+dy*dy);
+        //始点が砦の場合円周上にする
+        if (this.from instanceof tactics.Fort) {
+            var len = 16/Math.sqrt(dx*dx+dy*dy);
             fx = fx*(1-len)+tx*len;
             fy = fy*(1-len)+ty*len;
             dx = tx-fx, dy = ty-fy;
 
-            //始点が敵惑星の場合非表示する
+            //始点が敵砦の場合非表示にする
             if (this.from.alignment != TYPE_PLAYER) {
                 this.visible = false;
                 return;
             }
         }
 
-        //終点が惑星の場合円周上にする
-        if (this.to instanceof tiger.Planet) {
-            var len = 38*this.to.power/Math.sqrt(dx*dx+dy*dy);
+        //終点が砦の場合円周上にする
+        if (this.to instanceof tactics.Fort) {
+            var len = 16/Math.sqrt(dx*dx+dy*dy);
             tx = fx*len+tx*(1-len);
             ty = fy*len+ty*(1-len);
             dx = tx-fx, dy = ty-fy;
