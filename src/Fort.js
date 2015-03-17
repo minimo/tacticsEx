@@ -59,17 +59,17 @@ tm.define("tactics.Fort", {
         var that = this;
         //選択カーソル
         this.cursor = tm.display.CircleShape({
-            width: 32,
-            height: 32,
+            width: 64,
+            height: 64,
             fillStyle: "rgba(0,0,0,0)",
-            strokeStyle: tm.graphics.LinearGradient(0,0,0,32).addColorStopList([
+            strokeStyle: tm.graphics.LinearGradient(0,0,0,64).addColorStopList([
                 { offset:0.0, color:"rgba(0,0,255,0.0)" },
                 { offset:0.2, color:"rgba(0,0,255,0.8)" },
                 { offset:0.5, color:"rgba(0,0,255,1.0)" },
                 { offset:0.8, color:"rgba(0,0,255,0.8)" },
                 { offset:1.0, color:"rgba(0,0,255,0.0)" },
             ]).toStyle(),
-            lineWidth: 3.0,
+            lineWidth: 5.0,
         }).addChildTo(this);
         this.cursor.blendMode = "source-over";
         this.cursor.alpha = 0;

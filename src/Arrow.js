@@ -20,7 +20,7 @@ tm.define("tactics.Arrow", {
     isForeground: true,
 
     init: function(from, to, width) {
-        width = width || 8;
+        width = width || 24;
         this.superInit("arrow", 160, width);
         this.setPosition(from.x, from.y);
 
