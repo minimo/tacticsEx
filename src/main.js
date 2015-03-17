@@ -9,6 +9,10 @@
 mt = new MersenneTwister();
 var rand = function(min, max) { return mt.nextInt(min, max); };    //乱数発生
 
+//フレームレート
+fps = 30;
+var sec = function(s) { return ~~(fps * s);}    //秒からフレーム数へ変換
+
 //定数
 //デバッグフラグ
 DEBUG = false;
@@ -36,10 +40,6 @@ MEDIA_LLA = 2;      //LawLatencyAudioPlugin
 //デフォルトメディアタイプ
 MEDIA_DEFAULT = MEDIA_ASSET;
 
-//フレームレート
-fps = 30;
-var sec = function(s) { return ~~(fps * s);}    //秒からフレーム数へ変換
-
 //表示レイヤー
 LAYER_SYSTEM = 8;           //システム表示
 LAYER_FOREGROUND = 7;       //フォアグラウンド
@@ -55,6 +55,17 @@ LAYER_BACKGROUND = 0;       //バックグラウンド
 TYPE_NEUTRAL = 0;
 TYPE_PLAYER = 1;
 TYPE_ENEMY = 2;
+
+//コントロールフラグ
+CTRL_NOTHING = 0;
+CTRL_MAP = 1;
+CTRL_FORT = 2;
+CTRL_UNIT = 3;
+CTRL_RATE = 4;
+CTRL_SCALE = 5;
+CTRL_ALLFORTS = 6;
+CTRL_MENU = 7;
+CTRL_IGNORE = 99;
 
 //インスタンス
 appMain = {};
