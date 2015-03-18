@@ -66,7 +66,7 @@ tm.define("tactics.Arrow", {
 
         //始点が砦の場合円周上にする
         if (this.from instanceof tactics.Fort) {
-            var len = 16/Math.sqrt(dx*dx+dy*dy);
+            var len = 64/Math.sqrt(dx*dx+dy*dy);
             fx = fx*(1-len)+tx*len;
             fy = fy*(1-len)+ty*len;
             dx = tx-fx, dy = ty-fy;
@@ -80,7 +80,7 @@ tm.define("tactics.Arrow", {
 
         //終点が砦の場合円周上にする
         if (this.to instanceof tactics.Fort) {
-            var len = 16/Math.sqrt(dx*dx+dy*dy);
+            var len = 64/Math.sqrt(dx*dx+dy*dy);
             tx = fx*len+tx*(1-len);
             ty = fy*len+ty*(1-len);
             dx = tx-fx, dy = ty-fy;

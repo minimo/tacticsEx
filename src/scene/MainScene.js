@@ -109,7 +109,7 @@ tm.define("tactics.MainScene", {
         if (res && res.distance < 32) {
             res.fort.select = true;
             this.control = CTRL_FORT;
-            this.arrow = tactics.Arrow(res.fort).addChildTo(this);
+            this.arrow = tactics.Arrow(res.fort).addChildTo(this.world);
             return;
         }
 
