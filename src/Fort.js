@@ -62,13 +62,6 @@ tm.define("tactics.Fort", {
             width: 64,
             height: 64,
             fillStyle: "rgba(0,0,0,0)",
-            strokeStyle: tm.graphics.LinearGradient(0,0,0,64).addColorStopList([
-                { offset:0.0, color:"rgba(0,0,255,0.0)" },
-                { offset:0.2, color:"rgba(0,0,255,0.8)" },
-                { offset:0.5, color:"rgba(0,0,255,1.0)" },
-                { offset:0.8, color:"rgba(0,0,255,0.8)" },
-                { offset:1.0, color:"rgba(0,0,255,0.0)" },
-            ]).toStyle(),
             lineWidth: 5.0,
         }).addChildTo(this);
         this.cursor.blendMode = "source-over";
@@ -93,6 +86,7 @@ tm.define("tactics.Fort", {
             }
             this.beforeSelect = that.select;
         };
+        this.changeCursolColor(alignment);
 
         //HP表示
         this.label = tm.display.OutlineLabel("", 20)
@@ -138,9 +132,7 @@ tm.define("tactics.Fort", {
             if (this.HP < 0) {
                 this.HP *= -1;
                 this.alignment = alignment;
-                this.image = tm.asset.Manager.get("planet");
-                this.setFrameIndex(this.type, 64, 64);
-                this.world.addChild(tacticsEffect.genShockwave(this.x, this.y, 3*this.power));
+                this.changeCursorColor(alignment);
             }
         }
     },
@@ -153,18 +145,25 @@ tm.define("tactics.Fort", {
     },
 
     //選択カーソル色変更
-    changeCursolColor: function(color) {
-        if (color == "blue") {
-            this.cursor.strokeStyle = tm.graphics.LinearGradient(0,0,0,80).addColorStopList([
+    changeCursolColor: function(alignment) {
+        if (alignment == TYPE_PLAYER) {
+            this.cursor.strokeStyle = tm.graphics.LinearGradient(0,0,0,64).addColorStopList([
                 { offset:0.0, color:"rgba(0,0,255,0.0)" },
                 { offset:0.2, color:"rgba(0,0,255,0.8)" },
                 { offset:0.5, color:"rgba(0,0,255,1.0)" },
                 { offset:0.8, color:"rgba(0,0,255,0.8)" },
                 { offset:1.0, color:"rgba(0,0,255,0.0)" },
             ]).toStyle();
-        }
-        if (color == "red") {
-            this.cursor.strokeStyle = tm.graphics.LinearGradient(0,0,0,80).addColorStopList([
+        } else if (alignment == TYPE_NEUTRAL) {
+            this.cursor.strokeStyle = tm.graphics.LinearGradient(0,0,0,64).addColorStopList([
+                { offset:0.0, color:"rgba(0,255,0,0.0)" },
+                { offset:0.2, color:"rgba(0,255,0,0.8)" },
+                { offset:0.5, color:"rgba(0,255,0,1.0)" },
+                { offset:0.8, color:"rgba(0,255,0,0.8)" },
+                { offset:1.0, color:"rgba(0,255,0,0.0)" },
+            ]).toStyle();
+        } else if (alignment == TYPE_ENEMY) {
+            this.cursor.strokeStyle = tm.graphics.LinearGradient(0,0,0,64).addColorStopList([
                 { offset:0.0, color:"rgba(255,0,0,0.0)" },
                 { offset:0.2, color:"rgba(255,0,0,0.8)" },
                 { offset:0.5, color:"rgba(255,0,0,1.0)" },
