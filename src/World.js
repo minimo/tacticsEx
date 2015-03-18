@@ -25,6 +25,9 @@ tm.define("tactics.World", {
     //スプライトレイヤー
     layers: null,
 
+    //ディスプレイリスト
+    dispList: null,
+
     //マップサイズ
     mapW: 17,
     mapH: 33,
@@ -77,6 +80,8 @@ tm.define("tactics.World", {
         this.superClass.prototype.addChild.call(this, this.base);
         this.setupMapBase();
 
+        this.dispList = [];
+
         //表示レイヤー構築（数字が大きい程優先度が高い）
         this.layers = [];
         for (var i = 0; i < LAYER_SYSTEM+1; i++) {
@@ -85,10 +90,32 @@ tm.define("tactics.World", {
 
         //マップ構築
         this.buildMap();
+
+        this.time = 0;
     },
 
     update: function() {
         if (this.busy) return;
+
+        //表示順序ソート
+        if (this.time > 10 && this.time%2 == 0) {
+            var len = this.dispList.length;
+            var dl = [];
+            for (var i = 0; i < len; i++) {
+                this.dispList[i].remove();
+                dl.push(this.dispList[i]);
+            }
+            dl.sort(function(a, b) {
+                if (a.y < b.y) return -1;
+                if (a.y > b.y) return 1;
+                return 0;
+            });
+            this.dispList = [];
+            for (var i = 0; i < len; i++) {
+                dl[i].addChildTo(this);
+            }
+        }
+        this.time++;
     },
 
     //マップの基部作成
@@ -334,19 +361,29 @@ tm.define("tactics.World", {
             return this;
         }
 
-        //ユニットレイヤ
+        //ユニットをオブジェクトレイヤへ
         if (child instanceof tactics.Unit) {
             child.world = this;
-            this.layers[LAYER_UNIT].addChild(child);
+            this.layers[LAYER_OBJEECT].addChild(child);
             this.units[this.units.length] = child;
+            this.dispList.push(child);
             return this;
         }
 
-        //マップレイヤ
+        //砦はオブジェクトレイヤへ
         if (child instanceof tactics.Fort) {
             child.world = this;
-            this.layers[LAYER_MAP].addChild(child);
+            this.layers[LAYER_OBJECT].addChild(child);
             this.forts[this.forts.length] = child;
+            this.dispList.push(child);
+            return this;
+        }
+
+        //マップオブジェクト
+        if (child instanceof tactics.MapObject) {
+            child.world = this;
+            this.layers[LAYER_OBJECT].addChild(child);
+            this.dispList.push(child);
             return this;
         }
 

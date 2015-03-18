@@ -9,6 +9,9 @@
 tm.define("tactics.MapObject", {
     superClass: "tm.display.Sprite",
 
+    //所属ワールド
+    world: null,
+
     init: function() {
         this.superInit("mapobject", 32, 32);
         this.setFrameIndex(0);

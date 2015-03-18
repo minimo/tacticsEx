@@ -46,13 +46,11 @@ MEDIA_LLA = 2;      //LawLatencyAudioPlugin
 MEDIA_DEFAULT = MEDIA_ASSET;
 
 //表示レイヤー
-LAYER_SYSTEM = 8;           //システム表示
-LAYER_FOREGROUND = 7;       //フォアグラウンド
-LAYER_EFFECT_UPPER = 6;     //エフェクト上位
-LAYER_MAPOBJ_UPPER = 5;     //マップオブジェクト上位
-LAYER_UNIT = 4;             //ユニット
-LAYER_MAPOBJ_LOWEE = 3;     //マップオブジェクト下位
-LAYER_EFFECT_LOWER = 2;     //エフェクト下位
+LAYER_SYSTEM = 6;           //システム表示
+LAYER_FOREGROUND = 5;       //フォアグラウンド
+LAYER_EFFECT_UPPER = 4;     //エフェクト上位
+LAYER_OBJECT = 3;           //マップオブジェクト
+LAYER_EFFECT_LOWER = 2;     //エフェクト中間
 LAYER_MAP = 1;              //マップ
 LAYER_BACKGROUND = 0;       //バックグラウンド
 

@@ -79,7 +79,6 @@ tm.define("tactics.MainScene", {
     },
     
     update: function() {
-
         //スクリーンショット保存
         var kb = appMain.keyboard;
         if (kb.getKeyDown("s")) appMain.canvas.saveAsImage();
