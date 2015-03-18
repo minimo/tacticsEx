@@ -54,17 +54,17 @@ tm.define("tactics.Unit", {
 
         var ss = null;
         switch(alignment) {
-            case 0:
+            case TYPE_NEUTRAL:
                 ss = tactics.SpriteSheet.Normal;
                 break;
-            case 1:
+            case TYPE_PLAYER:
                 ss = tactics.SpriteSheet.Knight;
                 break;
-            case 2:
+            case TYPE_ENEMY:
                 ss = tactics.SpriteSheet.Monster;
                 break;
         }
-        this.sprite = tm.display.AnimationSprite(tactics.SpriteSheet.Knight)
+        this.sprite = tm.display.AnimationSprite(ss)
             .addChildTo(this)
             .gotoAndPlay("stop_down");
     

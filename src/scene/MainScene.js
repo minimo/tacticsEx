@@ -132,11 +132,12 @@ tm.define("tactics.MainScene", {
         var moveY = Math.abs(sx - this.beforeY);
 
         var mp = this.world.screenToMap(sx, sy);
-        this.test.text = "x:"+mp.x+" y:"+mp.y;
-
-        var mp = this.world.screenToMap(sx, sy);
         var x = mp.x*64+(mp.y%2?32:0)+32;
         var y = mp.y*16;
+        if (this.control == CTRL_FORT) {
+            var res = this.world.getFort(sx, sy);
+        }
+
         if (this.pointer) {
             this.pointer.setPosition(x, y);
         } else {
@@ -149,6 +150,10 @@ tm.define("tactics.MainScene", {
         if (this.arrow) {
             this.arrow.to = {x:sx-32, y:sy-16, active:true};
         }
+
+        //デバッグ用
+        this.test.text = "x:"+mp.x+" y:"+mp.y;
+
         this.touchTime++;
     },
 
