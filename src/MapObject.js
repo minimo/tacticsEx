@@ -12,7 +12,7 @@ tm.define("tactics.MapObject", {
     init: function() {
         this.superInit("mapobject", 32, 32);
         this.setFrameIndex(0);
-        this.setScale(2);
+        this.setScale(MAPCHIP_SCALE);
     },
 });
 
@@ -23,6 +23,6 @@ tm.define("tactics.MapChip", {
     init: function() {
         this.superInit("mapchip", 32, 16);
         this.setFrameIndex(0);
-        this.setScale(2);
+        this.setScale(MAPCHIP_SCALE);
     },
 });

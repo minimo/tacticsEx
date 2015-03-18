@@ -120,7 +120,7 @@ tm.define("tactics.MainScene", {
         this.pointer = tm.display.Sprite("mapobject", 32, 32)
             .addChildTo(this.world.base)
             .setFrameIndex(4)
-            .setScale(2, 2)
+            .setScale(MAPCHIP_SCALE)
             .setPosition(x, y);
     },
 
@@ -141,9 +141,14 @@ tm.define("tactics.MainScene", {
         if (this.pointer) {
             this.pointer.setPosition(x, y);
         } else {
+            this.pointer = tm.display.Sprite("mapobject", 32, 32)
+                .addChildTo(this.world.base)
+                .setFrameIndex(4)
+                .setScale(MAPCHIP_SCALE)
+                .setPosition(x, y);
         }
         if (this.arrow) {
-            this.arrow.to = {x:sx, y:sy, active:true};
+            this.arrow.to = {x:sx-32, y:sy-16, active:true};
         }
         this.touchTime++;
     },

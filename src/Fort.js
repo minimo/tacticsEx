@@ -47,7 +47,7 @@ tm.define("tactics.Fort", {
     init: function(alignment, HP, power, type) {
         this.superInit("mapobject", 32, 32);
         this.setFrameIndex(5);
-        this.setScale(2);
+        this.setScale(MAPCHIP_SCALE);
 
         this.alignment = alignment || 0;
         this.HP = HP || 100;
