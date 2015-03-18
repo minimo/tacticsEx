@@ -102,8 +102,6 @@ tm.define("tactics.MainScene", {
         this.beforeY = sy;
         this.touchTime = 0;
 
-//        this.arrow = tactics.Arrow().addChildTo(this);
-
         //砦の判定
         var res = this.world.getFort(sx, sy);
         if (res && res.distance < 32) {
