@@ -169,9 +169,14 @@ tm.define("tactics.World", {
 
     //ユニット投入
     enterUnit: function(from, to, rate) {
-        var unit = tactics.Unit()
+        if (!(from instanceof tactics.Fort))return null;
+        rate = rate || 0.5;
+
+        var unit = tactics.Unit(from.alignment, 100, 1)
             .addChildTo(this)
-            .setPosition(from.x-this.x, from.y-this.y);
+            .setPosition(from.x-this.x, from.y-this.y)
+            .setDestination(to);
+        return unit;
     },
 
     //スクリーン座標からマップ座標へ変換
@@ -363,7 +368,7 @@ tm.define("tactics.World", {
         //ユニットをオブジェクトレイヤへ
         if (child instanceof tactics.Unit) {
             child.world = this;
-            this.layers[LAYER_OBJEECT].addChild(child);
+            this.layers[LAYER_OBJECT].addChild(child);
             this.units[this.units.length] = child;
             this.dispList.push(child);
             return this;

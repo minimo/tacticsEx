@@ -14,6 +14,7 @@ tm.define("tactics.Unit", {
 
     //所属部隊ＩＤ
     groupID: 0,
+    leader: false, //隊長フラグ
 
     //戦力
     HP: 0,
@@ -66,13 +67,17 @@ tm.define("tactics.Unit", {
         }
         this.sprite = tm.display.AnimationSprite(ss)
             .addChildTo(this)
-            .gotoAndPlay("stop_down");
+            .gotoAndPlay("walk_down");
     
         this.time = 0;
     },
 
     update: function() {
         if (this.world.busy) return;
+
+        this.x += this.vx;
+        this.y += this.vy;
+
         this.bx = this.x;
         this.by = this.y;
         this.time++;
@@ -94,6 +99,7 @@ tm.define("tactics.Unit", {
         if (dis == 0)return;
         this.vx = (tx-gx)/dis*this.speed;
         this.vy = (ty-gy)/dis*this.speed;
+        return this;
     },
 
     //特定ワールド座標からの距離
@@ -107,16 +113,19 @@ tm.define("tactics.Unit", {
     damage: function(pow) {
         this.HP -= pow;
         if (this.HP < 0)this.dead();
+        return this;
     },
 
     //目標到着処理
     arrival: function() {
         this.active = false;
+        return this;
     },
 
     //破壊処理
     dead: function() {
         this.active = false;
+        return this;
     }
 });
 

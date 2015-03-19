@@ -120,7 +120,8 @@ tm.define("tactics.MainScene", {
             .addChildTo(this.world.base)
             .setFrameIndex(4)
             .setScale(MAPCHIP_SCALE)
-            .setPosition(x, y);
+            .setPosition(x, y)
+            .setAlpha(0.5);
     },
 
     //タッチorクリック移動処理
@@ -134,9 +135,6 @@ tm.define("tactics.MainScene", {
         var mp = this.world.screenToMap(sx, sy);
         var x = mp.x*64+(mp.y%2?32:0)+32;
         var y = mp.y*16;
-        if (this.control == CTRL_FORT) {
-            var res = this.world.getFort(sx, sy);
-        }
 
         if (this.pointer) {
             this.pointer.setPosition(x, y);
@@ -145,10 +143,36 @@ tm.define("tactics.MainScene", {
                 .addChildTo(this.world.base)
                 .setFrameIndex(4)
                 .setScale(MAPCHIP_SCALE)
-                .setPosition(x, y);
+                .setPosition(x, y)
+                .setAlpha(0.5);
         }
         if (this.arrow) {
-            this.arrow.to = {x:sx-32, y:sy-16, active:true};
+            if (this.arrow.to instanceof tactics.Fort) {
+            } else {
+                this.arrow.to = {x:sx-32, y:sy-16, active:true};
+            }
+        }
+
+        //砦をタッチ
+        if (this.control == CTRL_FORT) {
+            var res = this.world.getFort(sx, sy);
+            if (res && res.fort != this.arrow.from) {
+                if (res.distance < 32) {
+                    if (this.arrow.to instanceof tactics.Fort && this.arrow.to != res.fort) {
+                        this.arrow.to.select = false;
+                    }
+                    this.arrow.to = res.fort;
+                    res.fort.select = true;
+                    this.pointer.remove();
+                    this.pointer = null;
+                } else {
+                    if (this.arrow.to instanceof tactics.Fort) {
+                        var f = this.arrow.to;
+                        f.select = false;
+                        this.arrow.to = {x:sx-32, y:sy-16, active:true};
+                    }
+                }
+            }
         }
 
         //デバッグ用
@@ -166,6 +190,15 @@ tm.define("tactics.MainScene", {
         var moveX = Math.abs(sx - this.beforeX);
         var moveY = Math.abs(sx - this.beforeY);
 
+        //砦操作
+        if (this.control == CTRL_FORT && this.arrow) {
+            var from = this.arrow.from;
+            var to = this.arrow.to;
+            //行き先が砦かユニットの場合は兵隊派遣
+            if (to instanceof tactics.Fort || to instanceof tactics.Unit) {
+                this.world.enterUnit(from, to);
+            }
+        }
         this.world.selectFortGroup(TYPE_PLAYER, false);
         this.world.selectFortGroup(TYPE_ENEMY, false);
         this.world.selectFortGroup(TYPE_NEUTRAL, false);
@@ -177,6 +210,8 @@ tm.define("tactics.MainScene", {
             this.arrow.remove();
             this.arrow = null;
         }
+
+        this.control = CTRL_NOTHING;
     },
 });
 
