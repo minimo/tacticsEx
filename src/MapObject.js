@@ -29,3 +29,20 @@ tm.define("tactics.MapChip", {
         this.setScale(MAPCHIP_SCALE);
     },
 });
+
+//マップ上エフェクト
+tm.define("tactics.MapEffect", {
+    superClass: "tm.display.AnimationSprite",
+
+    delOK: false,
+    isObject: true,
+
+    init: function(ss) {
+        this.superInit(ss);
+        
+    },
+    onanimationend: function() {
+        this.delOK = true;
+    }
+});
+
