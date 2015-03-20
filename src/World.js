@@ -98,23 +98,27 @@ tm.define("tactics.World", {
         if (this.busy) return;
 
         //表示順序ソート
-        if (this.time > 10 && this.time%3 == 0) {
-            var len = this.dispList.length;
-            var dl = [];
-            for (var i = 0; i < len; i++) {
-                this.dispList[i].remove();
-                dl.push(this.dispList[i]);
-            }
-            dl.sort(function(a, b) {
-                if (a.y < b.y) return -1;
-                return 0;
-            });
-            this.dispList = [];
-            for (var i = 0; i < len; i++) {
-                dl[i].addChildTo(this);
-            }
-        }
+        if (this.time > 10 && this.time%3 == 0) this.sortDisplayList();
+
         this.time++;
+    },
+
+    //表示順序のソート
+    sortDisplayList: function() {
+        var len = this.dispList.length;
+        var dl = [];
+        for (var i = 0; i < len; i++) {
+            this.dispList[i].remove();
+            dl.push(this.dispList[i]);
+        }
+        dl.sort(function(a, b) {
+            if (a.y < b.y) return -1;
+            return 1;
+        });
+        this.dispList = [];
+        for (var i = 0; i < len; i++) {
+            dl[i].addChildTo(this);
+        }
     },
 
     //マップの基部作成
