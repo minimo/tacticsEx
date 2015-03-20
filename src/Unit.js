@@ -140,6 +140,14 @@ tm.define("tactics.Unit", {
     //破壊処理
     dead: function() {
         this.active = false;
+        tactics.MapEffect(tactics.SpriteSheet.Explode)
+            .addChildTo(this.world)
+            .setPosition(this.x, this.y)
+            .gotoAndPlay("explode");
+        tactics.MapEffect(tactics.SpriteSheet.Knight)
+            .addChildTo(this.world)
+            .setPosition(this.x, this.y)
+            .gotoAndPlay("dead");
         return this;
     }
 });

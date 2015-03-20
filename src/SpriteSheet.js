@@ -50,6 +50,10 @@ tactics.createSpriteSheet = function() {
                 next: "attack_up",
                 frequency: 5,
             },
+            "dead": {
+                frames:[28],
+                frequency: 60,
+            },
         },
     });
 
@@ -138,7 +142,7 @@ tactics.createSpriteSheet = function() {
         animations: {
             "explode": {
                 frames:[0,1,2,3,4,5,6,7],
-                frequency: 4,
+                frequency: 2,
             },
         },
     });
