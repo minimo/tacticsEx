@@ -20,12 +20,21 @@ tm.define("tactics.PowerBalance", {
     //マウスオーバーフラグ
     mouseover: false,
 
+    //各陣営勢力
+    pl: 0,
+    en: 0,
+    nr: 0,
+
     init: function(world, width, height) {
         this.superInit();
         this.world = world || null;
         this.width = width || SC_W*0.9;
         this.height = height || 32;
         this.blendMode = "lighter";
+
+        this.pl = this.world.getPower(TYPE_PLAYER);
+        this.en = this.world.getPower(TYPE_ENEMY);
+        this.nt = this.world.getPower(TYPE_NEUTRAL);
     },
 
     update: function() {
@@ -51,19 +60,20 @@ tm.define("tactics.PowerBalance", {
             var en = this.world.getPower(TYPE_ENEMY);
             var nt = this.world.getPower(TYPE_NEUTRAL);
 
-            var playerFort  = pl.fort;
-            var playerUnit  = pl.unit;
-            var enemyFort   = en.fort;
-            var enemyUnit   = en.unit;
-            var neutralFort = nt.fort;
+            if (this.pl < pl) this.pl++
+            if (this.pl > pl) this.pl--
+            if (this.en < en) this.en++
+            if (this.en > en) this.en--
+            if (this.nt < nt) this.nt++
+            if (this.nt > nt) this.nt--
 
             //全体
-            var all = playerFort+playerUnit+enemyFort+enemyUnit+neutralFort;
+            var all = this.pl+this.en+this.nt;
 
             //勢力比率
-            var player = (playerFort+playerUnit)/all;
-            var enemy = (enemyFort+enemyUnit)/all;
-            var neutral = (neutralFort)/all;
+            var player  = this.pl/all;
+            var enemy   = this.en/all;
+            var neutral = this.nt/all;
 
             var bl = this.width-20;
             canvas.fillStyle = "rgba(0, 64, 255, 0.8)";

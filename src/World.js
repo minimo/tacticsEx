@@ -380,7 +380,7 @@ tm.define("tactics.World", {
                 if (u.alignment == alignment) valF += u.HP;
             }
         }
-        return {fort:valF, unit:valU};
+        return valF+valU;
     },
 
     //addChildオーバーライド
