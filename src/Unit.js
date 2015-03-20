@@ -78,23 +78,38 @@ tm.define("tactics.Unit", {
         this.x += this.vx;
         this.y += this.vy;
 
+        if (this.vy < 0) {
+            if (this.sprite.currentAnimationName != "walk_up") this.sprite.gotoAndPlay("walk_up");
+            if (this.vx < 0) {
+                this.sprite.scaleX = -1;
+            } else {
+                this.sprite.scaleX = 1;
+            }
+        } else {
+            if (this.sprite.currentAnimationName != "walk_down") this.sprite.gotoAndPlay("walk_down");
+            if (this.vx < 0) {
+                this.sprite.scaleX = 1;
+            } else {
+                this.sprite.scaleX = -1;
+            }
+        }
+        if (this.vx == 0 && this.vy == 0) {
+            if (this.sprite.currentAnimationName != "walk_up") this.sprite.gotoAndPlay("stop_up");
+            if (this.sprite.currentAnimationName != "walk_down") this.sprite.gotoAndPlay("stop_down");
+        }
+
         this.bx = this.x;
         this.by = this.y;
         this.time++;
     },
 
     //目的地座標設定
-    setDestination: function(dest, r, d) {
+    setDestination: function(dest) {
         this.destination = dest;
-        r = r || rand(0, 359)*toRad;
-        d = d * 0.7 || rand(0, 32);
-        var tx = Math.sin(r)*d*dest.power;
-        var ty = Math.cos(r)*d*dest.power;
-
         var gx = this.x;
         var gy = this.y;
-        var tx = dest.x+tx;
-        var ty = dest.y+ty;
+        var tx = dest.x;
+        var ty = dest.y;
         var dis = Math.sqrt((tx-gx)*(tx-gx) + (ty-gy)*(ty-gy));
         if (dis == 0)return;
         this.vx = (tx-gx)/dis*this.speed;
