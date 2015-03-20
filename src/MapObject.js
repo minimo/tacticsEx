@@ -39,7 +39,6 @@ tm.define("tactics.MapEffect", {
 
     init: function(ss) {
         this.superInit(ss);
-        
     },
     onanimationend: function() {
         this.delOK = true;
