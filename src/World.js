@@ -35,12 +35,6 @@ tm.define("tactics.World", {
     //最大砦数
     maxForts: 20,
 
-    //砦リスト
-    forts: null,
-
-    //ユニットリスト
-    units: null,
-
     //砦ＩＤ連番
     fortID: 0,
 
@@ -69,9 +63,6 @@ tm.define("tactics.World", {
         this.scene = scene;
 
         this.seed = seed || 0;
-
-        this.forts = [];
-        this.units = [];
 /*
         this.base = tm.display.Sprite("mapbase").setOrigin(0, 0).setPosition(32, 16);
         this.superClass.prototype.addChild.call(this, this.base);
@@ -101,8 +92,10 @@ tm.define("tactics.World", {
         if (this.time > 10 && this.time%6 == 0) this.sortDisplayList();
 
         //ユニット到着判定
-        for (var i = 0, len = this.units.length; i < len; i++) {
-            var unit = this.units[i];
+        var len = this.dispList.length;
+        for (var i = 0; i < len; i++) {
+            var unit = this.dispList[i];
+            if (!(unit instanceof tactics.Unit)) continue;
             if (unit.HP <= 0)continue;
             var fort = unit.destination;
             //到着判定
@@ -120,7 +113,6 @@ tm.define("tactics.World", {
         }
 
         //死亡ユニット掃除
-        var len = this.dispList.length;
         for (var i = 0; i < len; i++) {
             var unit = this.dispList[i];
             if (unit === undefined)continue;
@@ -197,8 +189,6 @@ tm.define("tactics.World", {
         f.ID = this.fortID;
         this.fortID++;
 
-        //管理用配列に入れる
-        this.forts.push(f);
         return f;
     },
 
@@ -211,7 +201,7 @@ tm.define("tactics.World", {
         rate = rate || 0.5;
 
         var hp = Math.floor(from.HP*rate);
-        from.hp -= hp;
+        from.HP -= hp;
         var unit = tactics.Unit(from.alignment, hp, 1)
             .addChildTo(this)
             .setPosition(from.x-this.x, from.y-this.y)
@@ -281,13 +271,15 @@ tm.define("tactics.World", {
 
     //指定スクリーン座標から一番近い砦を取得
     getFort: function(x, y){
-        if (this.forts.length == 0) return null;
+        if (this.dispList.length == 0) return null;
         x = x-this.base.x;
         y = y-this.base.y;
         var bd = 99999999;
         var f = null;
-        for (var i = 0; i < this.forts.length; i++) {
-            var p = this.forts[i];
+        var len = this.dispList.length;
+        for (var i = 0; i < len; i++) {
+            var p = this.dispList[i];
+            if (!(p instanceof tactics.Fort)) continue;
             var dx = p.x-x;
             var dy = p.y-y;
             var dis = dx*dx+dy*dy;
@@ -302,28 +294,36 @@ tm.define("tactics.World", {
     //特定陣営の砦を配列で取得
     getFortGroup: function(alignment) {
         var forts = [];
-        for (var i = 0; i < this.forts.length; i++) {
-            if (this.forts[i].alignment == alignment) forts.push(this.forts[i]);
+        var len = this.dispList.length;
+        for (var i = 0; i < len; i++) {
+            var fort = this.dispList[i];
+            if (!(fort instanceof tactics.Fort)) continue;
+            if (fort.alignment == alignment) forts.push(fort);
         }
         return forts.length == 0? null : forts;
     },
 
-    //特定陣営の惑星を選択／非選択にする
+    //特定陣営の砦を選択／非選択にする
     selectFortGroup: function(alignment, select) {
-        for (var i = 0; i < this.forts.length; i++) {
-            if (this.forts[i].alignment == alignment) this.forts[i].select = select;
+        var len = this.dispList.length;
+        for (var i = 0; i < len; i++) {
+            var fort = this.dispList[i];
+            if (!(fort instanceof tactics.Fort)) continue;
+            if (fort.alignment == alignment) fort.select = select;
         }
     },
 
     //指定スクリーン座標から一番近い部隊を取得
     getUnit: function(x, y) {
-        if (this.units.length == 0)return null;
+        if (this.dispList.length == 0)return null;
         x = x-this.x;
         y = y-this.y;
         var bd = 99999999;
         var unit = null;
-        for (var i = 0; i < this.units.length; i++) {
-            var u = this.units[i];
+        var len = this.dispList.length;
+        for (var i = 0; i < len; i++) {
+            var u = this.dispList[i];
+            if (!(u instanceof tactics.Unit)) continue;
             var dx = u.x-x;
             var dy = u.y-y;
             var dis = dx*dx+dy*dy;
@@ -338,46 +338,49 @@ tm.define("tactics.World", {
     //特定のグループＩＤのユニットを配列で取得
     getUnitGroup: function(groupID) {
         var units = [];
-        for (var i = 0; i < this.units.length; i++) {
-            if (this.units[i].groupID == groupID) units.push(this.units[i]);
+        var len = this.dispList.length;
+        for (var i = 0; i < len; i++) {
+            var unit = this.dispList[i];
+            if (!(unit instanceof tactics.Unit)) continue;
+            if (unit.groupID == groupID) units.push(unit);
         }
         return units.length == 0? null : units;
     },
 
     //特定のユニットグループを選択／非選択にする
     selectUnitGroup: function(groupID, select) {
-        for (var i = 0, len = this.units.length; i < len; i++) {
-            var u = this.units[i];
+        var len = this.dispList.length;
+        for (var i = 0; i < len; i++) {
+            var u = this.dispList[i];
+            if (!(u instanceof tactics.Unit)) continue;
             if (u.groupID == groupID)u.select = select;
         }
     },
 
     //特定のユニットグループの目標を変更する
     setDestinationUnitGroup: function(groupID, destination) {
-        for (var i = 0, len = this.units.length; i < len; i++) {
-            var u = this.units[i];
+        var len = this.dispList.length;
+        for (var i = 0; i < len; i++) {
+            var u = this.dispList[i];
+            if (!(u instanceof tactics.Unit)) continue;
             if (u.groupID == groupID)u.setDestination(destination);
         }
     },
-    
-    //惑星戦力合計を算出
-    getPowerOfForts: function(alignment) {
-        var val = 0;
-        for (var i = 0, len = this.forts.length; i < len; i++) {
-            var p = this.forts[i];
-            if (p.alignment == alignment) val += p.HP;
-        }
-        return val;
-    },
 
-    //部隊戦力合計を算出
-    getPowerOfUnits: function(alignment) {
-        var val = 0;
-        for (var i = 0, len = this.units.length; i < len; i++) {
-            var p = this.units[i];
-            if (p.alignment == alignment) val += p.HP;
+    //戦力合計を算出
+    getPower: function(alignment) {
+        var valU = 0, valF = 0;
+        var len = this.dispList.length;
+        for (var i = 0; i < len; i++) {
+            var u = this.dispList[i];
+            if (u instanceof tactics.Unit) {
+                if (u.alignment == alignment) valU += u.HP;
+            }
+            if (u instanceof tactics.Fort) {
+                if (u.alignment == alignment) valF += u.HP;
+            }
         }
-        return val;
+        return {fort:valF, unit:valU};
     },
 
     //addChildオーバーライド
@@ -409,7 +412,6 @@ tm.define("tactics.World", {
         if (child instanceof tactics.Unit) {
             child.world = this;
             this.layers[LAYER_OBJECT].addChild(child);
-            this.units[this.units.length] = child;
             this.dispList.push(child);
             return this;
         }
@@ -418,7 +420,6 @@ tm.define("tactics.World", {
         if (child instanceof tactics.Fort) {
             child.world = this;
             this.layers[LAYER_OBJECT].addChild(child);
-            this.forts[this.forts.length] = child;
             this.dispList.push(child);
             return this;
         }
