@@ -47,11 +47,15 @@ tm.define("tactics.PowerBalance", {
         //勢力図作成
         if (this.world) {
             //各陣営
-            var playerFort  = this.world.getPowerOfForts(TYPE_PLAYER);
-            var playerUnit  = this.world.getPowerOfUnits(TYPE_PLAYER);
-            var enemyFort   = this.world.getPowerOfForts(TYPE_ENEMY);
-            var enemyUnit   = this.world.getPowerOfUnits(TYPE_ENEMY);
-            var neutralFort = this.world.getPowerOfForts(TYPE_NEUTRAL);
+            var pl = this.world.getPower(TYPE_PLAYER);
+            var en = this.world.getPower(TYPE_ENEMY);
+            var nt = this.world.getPower(TYPE_NEUTRAL);
+
+            var playerFort  = pl.fort;
+            var playerUnit  = pl.unit;
+            var enemyFort   = en.fort;
+            var enemyUnit   = en.unit;
+            var neutralFort = nt.fort;
 
             //全体
             var all = playerFort+playerUnit+enemyFort+enemyUnit+neutralFort;
