@@ -112,14 +112,25 @@ tm.define("tactics.World", {
             }
         }
 
-        //死亡ユニット掃除
+        //ディスプレイリストから不要オブジェクト掃除
         for (var i = 0; i < len; i++) {
-            var unit = this.dispList[i];
-            if (unit === undefined)continue;
-            if (!(unit instanceof tactics.Unit)) continue;
-            if (unit.HP < 1 || !unit.active) {
-                unit.remove();
+            var obj = this.dispList[i];
+            if (obj === undefined)continue;
+
+            //ユニット
+            if (obj instanceof tactics.Unit) {
+                if (obj.HP < 1 || !obj.active) {
+                    obj.remove();
+                    this.dispList.splice(i, 1);
+                }
+                continue;
+            }
+
+            //削除フラグ
+            if (obj.delOK) {
+                obj.remove();
                 this.dispList.splice(i, 1);
+                continue;
             }
         }
 
@@ -375,8 +386,7 @@ tm.define("tactics.World", {
             var u = this.dispList[i];
             if (u instanceof tactics.Unit) {
                 if (u.alignment == alignment) valU += u.HP;
-            }
-            if (u instanceof tactics.Fort) {
+            } else if (u instanceof tactics.Fort) {
                 if (u.alignment == alignment) valF += u.HP;
             }
         }
@@ -405,6 +415,14 @@ tm.define("tactics.World", {
         //システム表示レイヤ
         if (child.isSystem) {
             this.layers[LAYER_SYSTEM].addChild(child);
+            return this;
+        }
+
+        //オブジェクト指定はオブジェクトレイヤへ
+        if (child.isObject) {
+            child.world = this;
+            this.layers[LAYER_OBJECT].addChild(child);
+            this.dispList.push(child);
             return this;
         }
 
