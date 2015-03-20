@@ -86,7 +86,7 @@ tm.define("tactics.Fort", {
             }
             this.beforeSelect = that.select;
         };
-        this.changeCursolColor(alignment);
+        this.changeCursorColor(alignment);
 
         //HP表示
         this.label = tm.display.OutlineLabel("", 20)
@@ -145,7 +145,7 @@ tm.define("tactics.Fort", {
     },
 
     //選択カーソル色変更
-    changeCursolColor: function(alignment) {
+    changeCursorColor: function(alignment) {
         if (alignment == TYPE_PLAYER) {
             this.cursor.strokeStyle = tm.graphics.LinearGradient(0,0,0,64).addColorStopList([
                 { offset:0.0, color:"rgba(0,0,255,0.0)" },
