@@ -98,7 +98,38 @@ tm.define("tactics.World", {
         if (this.busy) return;
 
         //表示順序ソート
-        if (this.time > 10 && this.time%3 == 0) this.sortDisplayList();
+        if (this.time > 10 && this.time%6 == 0) this.sortDisplayList();
+
+        //ユニット到着判定
+        for (var i = 0, len = this.units.length; i < len; i++) {
+            var unit = this.units[i];
+            if (unit.HP <= 0)continue;
+            var fort = unit.destination;
+            //到着判定
+            var dis = distance(unit, fort);
+            if (dis < 26) {
+                fort.damage(unit.alignment, unit.HP);
+                unit.HP = 0;
+                unit.active = false;
+                if (fort.alignment == unit.alignment) {
+                    unit.arrival();
+                } else {
+                    unit.dead();
+                }
+            }
+        }
+
+        //死亡ユニット掃除
+        var len = this.dispList.length;
+        for (var i = 0; i < len; i++) {
+            var unit = this.dispList[i];
+            if (unit === undefined)continue;
+            if (!(unit instanceof tactics.Unit)) continue;
+            if (unit.HP < 1 || !unit.active) {
+                unit.remove();
+                this.dispList.splice(i, 1);
+            }
+        }
 
         this.time++;
     },
@@ -174,9 +205,14 @@ tm.define("tactics.World", {
     //ユニット投入
     enterUnit: function(from, to, rate) {
         if (!(from instanceof tactics.Fort))return null;
+
+        //砦戦力１０未満は派遣出来ない
+        if (from.HP < 10) return null;
         rate = rate || 0.5;
 
-        var unit = tactics.Unit(from.alignment, 100, 1)
+        var hp = Math.floor(from.HP*rate);
+        from.hp -= hp;
+        var unit = tactics.Unit(from.alignment, hp, 1)
             .addChildTo(this)
             .setPosition(from.x-this.x, from.y-this.y)
             .setDestination(to);

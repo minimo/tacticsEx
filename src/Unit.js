@@ -81,16 +81,16 @@ tm.define("tactics.Unit", {
         if (this.vy < 0) {
             if (this.sprite.currentAnimationName != "walk_up") this.sprite.gotoAndPlay("walk_up");
             if (this.vx < 0) {
-                this.sprite.scaleX = -1;
+                this.scaleX = -1;
             } else {
-                this.sprite.scaleX = 1;
+                this.scaleX = 1;
             }
         } else {
             if (this.sprite.currentAnimationName != "walk_down") this.sprite.gotoAndPlay("walk_down");
             if (this.vx < 0) {
-                this.sprite.scaleX = 1;
+                this.scaleX = 1;
             } else {
-                this.sprite.scaleX = -1;
+                this.scaleX = -1;
             }
         }
         if (this.vx == 0 && this.vy == 0) {
