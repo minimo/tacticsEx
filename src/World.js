@@ -115,7 +115,10 @@ tm.define("tactics.World", {
         //ディスプレイリストから不要オブジェクト掃除
         for (var i = 0; i < len; i++) {
             var obj = this.dispList[i];
-            if (obj === undefined)continue;
+            if (obj === undefined) {
+                this.dispList.splice(i, 1);
+                continue;
+            }
 
             //ユニット
             if (obj instanceof tactics.Unit) {
