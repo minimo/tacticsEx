@@ -139,20 +139,11 @@ tm.define("tactics.World", {
 
     //表示順序のソート
     sortDisplayList: function() {
-        var len = this.dispList.length;
-        var dl = [];
-        for (var i = 0; i < len; i++) {
-            this.dispList[i].remove();
-            dl.push(this.dispList[i]);
-        }
-        dl.sort(function(a, b) {
+        var list = this.layers[LAYER_OBJECT].children;
+        list.sort(function(a, b) {
             if (a.y < b.y) return -1;
             return 1;
         });
-        this.dispList = [];
-        for (var i = 0; i < len; i++) {
-            dl[i].addChildTo(this);
-        }
     },
 
     //マップの基部作成
