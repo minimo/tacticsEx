@@ -52,7 +52,7 @@ tactics.createSpriteSheet = function() {
             },
             "dead": {
                 frames:[28],
-                frequency: 60,
+                frequency: 120,
             },
         },
     });
@@ -95,6 +95,10 @@ tactics.createSpriteSheet = function() {
                 frames:[16,17,18,19],
                 next: "stop_up",
                 frequency: 5,
+            },
+            "dead": {
+                frames:[28],
+                frequency: 120,
             },
         },
     });
