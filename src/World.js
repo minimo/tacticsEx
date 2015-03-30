@@ -106,8 +106,26 @@ tm.define("tactics.World", {
                 unit.active = false;
                 if (fort.alignment == unit.alignment) {
                     unit.arrival();
-                } else {
-                    unit.dead();
+                }
+            }
+        }
+
+        //ユニットvsユニット
+        var len = this.dispList.length;
+        for (var i = 0; i < len; i++) {
+            var u1 = this.dispList[i];
+            if (!(u1 instanceof tactics.Unit)) continue;
+            if (u1.battle) continue;
+            for (var j = 0; j < len; j++) {
+                var u2 = this.dispList[j];
+                if (!(u2 instanceof tactics.Unit)) continue;
+                if (u1.alignment == u2.alignment) continue;
+                var dis = distance(u1, u2);
+                if (dis < 26) {
+                    var p1 = Math.floor(u1.HP/5);
+                    var p2 = Math.floor(u2.HP/5);
+                    u1.HP -= p2;
+                    u2.HP -= p1;
                 }
             }
         }
@@ -172,7 +190,7 @@ tm.define("tactics.World", {
 
         this.enterFort( 1,  2, TYPE_PLAYER, 100, 1, 1);
         this.enterFort(15, 30, TYPE_ENEMY , 100, 1, 1);
-        for (var i = 0; i < 10; i++) {
+        for (var i = 0; i < 20; i++) {
             var x = this.rand(0, this.mapW-1);
             var y = this.rand(0, this.mapH-1);
             var hp = this.rand(70, 200)
@@ -416,7 +434,6 @@ tm.define("tactics.World", {
         if (child.isObject) {
             child.world = this;
             this.layers[LAYER_OBJECT].addChild(child);
-            this.dispList.push(child);
             return this;
         }
 
@@ -440,7 +457,6 @@ tm.define("tactics.World", {
         if (child instanceof tactics.MapObject) {
             child.world = this;
             this.layers[LAYER_OBJECT].addChild(child);
-            this.dispList.push(child);
             return this;
         }
 

@@ -34,6 +34,7 @@ tm.define("tactics.Unit", {
     speed: 1,
     bx: 0,
     by: 0,
+    battle: false, //戦闘中
 
     //所属ワールド
     world: null,
@@ -65,9 +66,17 @@ tm.define("tactics.Unit", {
                 ss = tactics.SpriteSheet.Monster;
                 break;
         }
+        var that = this;
         this.sprite = tm.display.AnimationSprite(ss)
             .addChildTo(this)
             .gotoAndPlay("walk_down");
+
+        this.sprite.onanimationend = function() {
+            if (this.currentAnimationName == "attack_down" ||
+                this.currentAnimationName == "attack_up") {
+                that.battle = false;
+            }
+        }
     
         this.time = 0;
     },
@@ -75,8 +84,19 @@ tm.define("tactics.Unit", {
     update: function() {
         if (this.world.busy) return;
 
-        this.x += this.vx;
-        this.y += this.vy;
+        if (this.battle) {
+            if (this.sprite.currentAnimationName != "attack_down" &&
+                this.sprite.currentAnimationName != "attack_up") {
+                this.sprite.gotoAndPlay("attack_up");
+            }
+        } else {
+            this.x += this.vx;
+            this.y += this.vy;
+        }
+
+        if (this.active && this.HP < 1) {
+            unit.dead();
+        }
 
         if (this.vy < 0) {
             if (this.sprite.currentAnimationName != "walk_up") this.sprite.gotoAndPlay("walk_up");
@@ -151,4 +171,3 @@ tm.define("tactics.Unit", {
         return this;
     }
 });
-
